@@ -73,6 +73,7 @@
                     <ToggleButton fx:id="eyeButton" mnemonicParsing="false" text="👁" StackPane.alignment="CENTER_RIGHT" />
                 </StackPane>
                 <Button fx:id="registerButton" alignment="CENTER" mnemonicParsing="false" onAction="#switchToLoginScene" text="Sign up " />
+            <Label fx:id="validMsg" />
             </VBox>
          <BorderPane.margin>
             <Insets top="-50.0" />

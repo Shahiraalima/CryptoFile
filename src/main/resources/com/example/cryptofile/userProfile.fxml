@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserProfileController">
+
+    <top>
+        <VBox spacing="10" style="-fx-padding: 30 30 20 30;">
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Profile Settings" />
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox spacing="25" style="-fx-padding: 0 30 30 30;">
+
+                <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12;                                           -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label style="-fx-font-size: 24px;" text="👤" />
+                        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Personal Information" />
+                    </HBox>
+
+                    <Separator />
+
+                    <GridPane hgap="20" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="120" prefWidth="120" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="300" prefWidth="400" />
+                        </columnConstraints>
+
+                        <Label text="Full Name:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField promptText="Enter your full name" style="-fx-font-size: 14px; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        </TextField>
+
+                        <!-- Email Field -->
+                        <Label text="Email Address:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField promptText="Enter your email address" style="-fx-font-size: 14px; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        </TextField>
+
+                        <!-- Username Field (Read-only) -->
+                        <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <TextField editable="false" style="-fx-font-size:  14px; -fx-padding: 10; -fx-background-color: #ecf0f1;" HBox.hgrow="ALWAYS">
+                            </TextField>
+                            <Label style="-fx-text-fill: #95a5a6; -fx-font-size: 12px;" text="(Cannot be changed)" />
+                        </HBox>
+
+                        <Label text="Account Created:" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="December 1, 2024" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        </Label>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0 0 0;">
+                        <Button fx:id="saveInfoBtn" onAction="#handleSaveInfo" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 14px;                                        -fx-padding: 10 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="Save Changes">
+                        </Button>
+                        <Button fx:id="cancelInfoBtn" onAction="#handleCancelInfo" style="-fx-background-color:  #95a5a6; -fx-text-fill: white; -fx-font-size: 14px;                                        -fx-padding: 10 25; -fx-background-radius: 8; -fx-cursor: hand;" text="Cancel">
+                        </Button>
+                        <Label fx:id="infoMessageLabel" style="-fx-text-fill: green; -fx-font-size:  13px;" wrapText="true" />
+                    </HBox>
+
+                </VBox>
+
+                <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12;                                           -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label style="-fx-font-size: 24px;" text="🔐" />
+                        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Change Password" />
+                    </HBox>
+
+                    <Separator />
+
+                    <GridPane hgap="20" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="120" prefWidth="120" />
+                            <ColumnConstraints minWidth="300" prefWidth="400" />
+                        </columnConstraints>
+
+                        <Label text="Current Password:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <PasswordField promptText="Enter current password" style="-fx-font-size: 14px; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        </PasswordField>
+
+                        <Label text="New Password:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <PasswordField promptText="Enter new password" style="-fx-font-size:  14px; -fx-padding: 10;">
+                            </PasswordField>
+                        </VBox>
+
+                        <Label text="Confirm Password:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <PasswordField promptText="Confirm new password" style="-fx-font-size: 14px; -fx-padding: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        </PasswordField>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+
+                    <VBox spacing="5" style="-fx-background-color: #ecf0f1; -fx-padding: 15; -fx-background-radius:  8;">
+                        <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Password Requirements:" />
+                        <Label style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" text="• At least 8 characters long" />
+                        <Label style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" text="• Contains at least one uppercase letter" />
+                        <Label style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" text="• Contains at least one lowercase letter" />
+                        <Label style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" text="• Contains at least one number" />
+                        <Label style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" text="• Contains at least one special character (! @#$%^&amp;*)" />
+                    </VBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0 0 0;">
+                        <Button fx:id="changePasswordBtn" onAction="#handleChangePassword" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14px;                                        -fx-padding: 10 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight:  bold;" text="Change Password">
+                        </Button>
+                        <Button fx:id="cancelPasswordBtn" onAction="#handleCancelPassword" style="-fx-background-color:  #95a5a6; -fx-text-fill: white; -fx-font-size: 14px;                                        -fx-padding: 10 25; -fx-background-radius: 8; -fx-cursor: hand;" text="Cancel">
+                        </Button>
+                        <Label fx:id="passwordMessageLabel" style="-fx-text-fill: green; -fx-font-size: 13px;" wrapText="true" />
+                    </HBox>
+
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

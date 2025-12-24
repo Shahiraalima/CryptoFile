@@ -43,6 +43,8 @@ public class RegisterController {
 
     @FXML private Button registerButton;
 
+    @FXML private Label validMsg;
+
     @FXML
     public void switchToLoginScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));

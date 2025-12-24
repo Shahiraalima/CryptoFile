@@ -1,7 +1,6 @@
 package com.example.cryptofile;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -42,11 +41,6 @@ public class LoginController {
     @FXML private Stage stage;
     @FXML private Scene scene;
 
-//    @FXML
-//    private void initialize() {
-//
-//
-//    }
 
     @FXML
     public void togglePasswordVisibility(ActionEvent event) throws IOException {
@@ -67,6 +61,8 @@ public class LoginController {
             eyeButton.setText("\uD83D\uDC41");
         }
     }
+
+
 
     @FXML
     public void switchToRegisterScene(ActionEvent event) throws IOException {
@@ -89,12 +85,6 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
-
-
-
-
-
-
 
 
 }

@@ -1,14 +1,238 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.cryptofile.UserHomeController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserHomeController">
 
-</AnchorPane>
+    <left>
+        <VBox prefWidth="250.0" spacing="20.0">
+            <HBox alignment="CENTER" spacing="10">
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../Pictures/Logo.png" />
+               </image>
+            </ImageView>
+                <VBox>
+                    <Label style="-fx-text-fill: #2c3e50; -fx-font-size: 18px; -fx-font-weight: bold;" text="CryptoFile" />
+                    <Label style="-fx-text-fill: #95a5a6; -fx-font-size: 11px;" text="Secure Encryption" />
+                </VBox>
+            </HBox>
+            <VBox alignment="CENTER" spacing="8">
+                <Circle radius="35" style="-fx-fill: gray; -fx-stroke: #ffffff; -fx-stroke-width: 3;" />
+                <Label fx:id="usernameLabel" text="username" />
+            </VBox>
+
+            <Line endX="256.8929443359375" endY="-1.0354881286621094" startX="0" style="-fx-stroke: #34495e; -fx-stroke-width: 1;" />
+
+            <VBox spacing="5" style="-fx-padding: 15 10;">
+
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#showDashboard" text="Dashboard">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="📊" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#showEncryptFile" text="Encrypt File">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="🔒" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#showDecryptFile" text="Decrypt File">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="🔓" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#showActivityLogs" text="Activity Logs">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="📋" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#showMyFiles" text="My Files">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="📁" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#showProfile" text="Profile Settings">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="👤" />
+                    </graphic>
+                </Button>
+
+            </VBox>
+            <Region VBox.vgrow="ALWAYS" />
+
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Line endX="250" startX="0" style="-fx-stroke: #34495e; -fx-stroke-width: 1;" />
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#handleLogout" text="Logout">
+                    <graphic>
+                        <Label style="-fx-font-size: 16px;" text="➜]" />
+                    </graphic>
+                </Button>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane>
+
+            <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;">
+                <VBox spacing="25" style="-fx-padding: 30;">
+
+                    <VBox spacing="5">
+                        <Label fx:id="welcomeLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Welcome back, user" />
+                        <Label fx:id="dateLabel" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Manage your file encryption and decryption with ease" />
+                    </VBox>
+
+                    <HBox alignment="CENTER" spacing="20">
+
+                        <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                            <Label style="-fx-font-size: 28px;" text="📂" />
+                            <Label style="-fx-font-weight: bold;" text="24">
+                        <font>
+                           <Font size="35.0" />
+                        </font></Label>
+                            <Label style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;" text="Total Files" />
+                        </VBox>
+
+                        <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                            <Label style="-fx-font-size: 28px;" text="🔒" />
+                            <Label style="-fx-font-weight: bold;" text="18">
+                        <font>
+                           <Font size="35.0" />
+                        </font></Label>
+                            <Label style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;" text="Encrypted Files" />
+                        </VBox>
+
+                        <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                            <Label style="-fx-font-size: 28px;" text="🔓" />
+                            <Label style="-fx-font-weight: bold;" text="6">
+                        <font>
+                           <Font size="35.0" />
+                        </font></Label>
+                            <Label style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;" text="Decrypted Files" />
+                        </VBox>
+
+                        <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                            <Label style="-fx-font-size: 28px;" text="💾" />
+                            <Label style="-fx-font-weight: bold;" text="2.4 GB">
+                        <font>
+                           <Font size="35.0" />
+                        </font></Label>
+                            <Label style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;" text="Storage Used" />
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="15">
+                        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Quick Actions" />
+                        <HBox alignment="CENTER" spacing="20">
+                            <VBox alignment="CENTER" onMouseClicked="#showEncryptFile" prefHeight="180" prefWidth="300" spacing="15" style="-fx-background-color: white;">
+                                <Label style="-fx-font-size: 48px;" text="🔒" />
+                                <Label text="Encrypt File">
+                           <font>
+                              <Font size="24.0" />
+                           </font></Label>
+                                <Label alignment="CENTER" text="Secure your files with encryption" />
+                            </VBox>
+                            <VBox alignment="CENTER" onMouseClicked="#showDecryptFile" prefHeight="180" prefWidth="300" spacing="15" style="-fx-background-color: white;">
+                                <Label style="-fx-font-size: 48px;" text="🔓" />
+                                <Label text="Decrypt File">
+                           <font>
+                              <Font size="24.0" />
+                           </font></Label>
+                                <Label alignment="CENTER" text="Access your encrypted files" />
+                            </VBox>
+                            <VBox alignment="CENTER" onMouseClicked="#showMyFiles" prefHeight="180" prefWidth="300" spacing="15" style="-fx-background-color: white;">
+                                <Label style="-fx-font-size: 48px;" text="📁" />
+                                <Label text="My Files">
+                           <font>
+                              <Font size="24.0" />
+                           </font></Label>
+                                <Label alignment="CENTER" text="View and manage your files" />
+                            </VBox>
+
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="15">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Recent Activity" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Hyperlink onAction="#showActivityLogs" style="-fx-text-fill: #3498db; -fx-font-size: 13px;" text="View All" />
+                        </HBox>
+                        <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;">
+                            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0;">
+                                <Label style="-fx-font-size: 24px;" text="🔒" />
+                                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                                    <Label text="document.pdf encrypted successfully">
+                              <font>
+                                 <Font size="14.0" />
+                              </font></Label>
+                                    <Label style="-fx-font-size: 12px; -fx-text-fill: #95a5a6;" text="2 hours ago" />
+                                </VBox>
+                                <Label text="Success" />
+                            </HBox>
+                            <Separator />
+                            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0;">
+                                <Label style="-fx-font-size: 24px;" text="🔓" />
+                                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                                    <Label text="report.xlsx decrypted">
+                              <font>
+                                 <Font size="14.0" />
+                              </font></Label>
+                                    <Label style="-fx-font-size: 12px; -fx-text-fill: #95a5a6;" text="5 hours ago" />
+                                </VBox>
+                                <Label text="Success" />
+                            </HBox>
+                            <Separator />
+                            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0;">
+                                <Label style="-fx-font-size: 24px;" text="🔒" />
+                                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                                    <Label text="image.png encrypted successfully">
+                              <font>
+                                 <Font size="14.0" />
+                              </font></Label>
+                                    <Label style="-fx-font-size: 12px; -fx-text-fill: #95a5a6;" text="Yesterday" />
+                                </VBox>
+                                <Label text="Success" />
+                            </HBox>
+                            <Separator />
+                            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0;">
+                                <Label style="-fx-font-size: 24px;" text="📁" />
+                                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                                    <Label text="New file added: project.zip">
+                              <font>
+                                 <Font size="14.0" />
+                              </font></Label>
+                                    <Label style="-fx-font-size: 12px; -fx-text-fill: #95a5a6;" text="2 days ago" />
+                                </VBox>
+                                <Label text="Info" />
+                            </HBox>
+
+                        </VBox>
+                    </VBox>
+
+                </VBox>
+            </ScrollPane>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
