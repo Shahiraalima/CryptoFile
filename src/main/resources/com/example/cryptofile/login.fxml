@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.LoginController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.LoginController">
    <center>
        <StackPane fx:id="loginPane" maxHeight="700.0" prefHeight="700.0" prefWidth="600.0" BorderPane.alignment="CENTER">
            <VBox fx:id="loginVBox" alignment="CENTER" maxHeight="600.0" maxWidth="450.0" minHeight="300.0" minWidth="400.0" prefHeight="600.0" prefWidth="400.0" spacing="30.0">
@@ -51,7 +51,7 @@
                        </font>
                    </ToggleButton>
                </StackPane>
-               <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#switchToUserHomeScene" text="Log in">
+               <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#HandleLogin" text="Log in">
                    <font>
                        <Font size="18.0" />
                    </font>

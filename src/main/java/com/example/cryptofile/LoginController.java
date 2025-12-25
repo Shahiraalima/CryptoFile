@@ -45,17 +45,6 @@ public class LoginController {
 
 
     @FXML
-    public void initialize() {
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            System.out.print("Connected to database successfully");
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to connect to database", e);
-        }
-    }
-
-
-    @FXML
     public void togglePasswordVisibility(ActionEvent event) throws IOException {
         showPassword.textProperty().bindBidirectional(password.textProperty());
         boolean visible = eyeButton.isSelected();
@@ -72,6 +61,31 @@ public class LoginController {
             password.requestFocus();
             password.positionCaret(password.getText().length());
             eyeButton.setText("\uD83D\uDC41");
+        }
+    }
+
+    @FXML
+    public void HandleLogin(ActionEvent event) throws IOException, SQLException {
+        String user = username.getText();
+        String pass = password.getText();
+
+        if(user.isEmpty() || pass.isEmpty()) {
+            errorMsg.setText("Please enter username and password");
+            return;
+        } else {
+            UserDAO userDAO = new UserDAO();
+            UserInfo validUser = userDAO.loginVerify(user, pass);
+            if (validUser != null) {
+                if(validUser.getRole().equals("admin")) {
+                    switchToAdminHomeScene(event);
+                }
+                else {
+                    switchToUserHomeScene(event);
+                }
+            } else {
+                errorMsg.setText("Invalid username or password");
+            }
+
         }
     }
 
@@ -99,5 +113,15 @@ public class LoginController {
         stage.show();
     }
 
+    @FXML
+    public void switchToAdminHomeScene(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("adminHome.fxml"));
+        Parent root = loader.load();
+        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+        scene=new Scene(root);
+        stage.setTitle("CryptoFile");
+        stage.setScene(scene);
+        stage.show();
+    }
 
 }
