@@ -16,34 +16,162 @@ import java.io.IOException;
 
 
 public class RegisterController {
-    @FXML private BorderPane registerRoot;
-    @FXML private StackPane registerPane;
-    @FXML private VBox registerBox;
-    @FXML private Label createMsg;
+    @FXML Button backBtn;
 
-    @FXML private Button backBtn;
-
-    @FXML private VBox userBox;
     @FXML private Label userMsg;
     @FXML private TextField userField;
 
-    @FXML private VBox emailBox;
     @FXML private Label emailMsg;
     @FXML private TextField emailField;
 
-    @FXML private StackPane passwordStack;
     @FXML private PasswordField passwordField;
     @FXML private TextField showPasswordField;
     @FXML private ToggleButton eyeIcon;
+    @FXML private Label requirementsMsg;
+    @FXML private Label passwordStrengthMsg;
 
-    @FXML private StackPane confirmPass;
     @FXML private PasswordField confirmPassField;
     @FXML private TextField confirmShow;
     @FXML private ToggleButton eyeButton;
 
-    @FXML private Button registerButton;
-
     @FXML private Label validMsg;
+    @FXML private Hyperlink loginLink;
+
+    @FXML
+    public void initialize(){
+        loginLink.setVisible(false);
+
+        userField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue){
+                String username = userField.getText();
+                if(!username.isEmpty()){
+                    UserDAO userDAO = new UserDAO();
+                    boolean exists = userDAO.checkUsernameExists(username);
+                    if(exists){
+                        userMsg.setText("Username is already taken.");
+                    } else {
+                        userMsg.setText("");
+                    }
+                }
+            }
+        });
+
+        emailField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue){
+                String email = emailField.getText();
+                if(!email.isEmpty()){
+                    UserDAO userDAO = new UserDAO();
+                    boolean exists = userDAO.checkEmailExists(email);
+                    if(exists){
+                        emailMsg.setText("Email is already registered.");
+                    } else {
+                        emailMsg.setText("");
+                    }
+                }
+            }
+        });
+
+        passwordField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue){
+                String password = passwordField.getText();
+                if(!password.isEmpty()){
+                    UserDAO userDAO = new UserDAO();
+                    String strengthMsg = userDAO.checkPasswordStrength(password);
+                    if(!strengthMsg.isEmpty()){
+                        if(!strengthMsg.equals("Strong")){
+                            requirementsMsg.setText(strengthMsg);
+                            passwordStrengthMsg.setStyle("-fx-text-fill: red;");
+                            passwordStrengthMsg.setText("Password Strength: Weak");
+                        } else {
+                            requirementsMsg.setText("");
+                            passwordStrengthMsg.setStyle("-fx-text-fill: green;");
+                            passwordStrengthMsg.setText("Password Strength: Strong");
+                        }
+                    } else {
+                        requirementsMsg.setText("");
+                        passwordStrengthMsg.setText("");
+                    }
+                }
+            }
+        });
+
+    }
+
+    @FXML
+    public void HandleRegister(ActionEvent event) throws IOException {
+        String username = userField.getText();
+        String email = emailField.getText();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPassField.getText();
+
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            validMsg.setText("Please fill in all fields.");
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            validMsg.setText("Passwords do not match.");
+            return;
+        }
+
+        UserInfo user = new UserInfo();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRole("user");
+
+        UserDAO userDAO = new UserDAO();
+        boolean success = userDAO.registerUser(user);
+        if (success) {
+            validMsg.setStyle("-fx-text-fill: green");
+            validMsg.setText("Registration is successful! You can now log in.");
+            loginLink.setVisible(true);
+        } else {
+            validMsg.setText("Registration failed. Please try again.");
+        }
+    }
+
+    @FXML
+    public void togglePasswordVisibility(ActionEvent event) throws IOException {
+        showPasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+
+        boolean visible = eyeIcon.isSelected();
+        passwordField.setVisible(!visible);
+        passwordField.setManaged(!visible);
+        showPasswordField.setVisible(visible);
+        showPasswordField.setManaged(visible);
+        if (visible) {
+            showPasswordField.requestFocus();
+            showPasswordField.positionCaret(showPasswordField.getText().length());
+            eyeIcon.setText("\uD83D\uDC41");
+        }
+        else {
+            passwordField.requestFocus();
+            passwordField.positionCaret(passwordField.getText().length());
+            eyeIcon.setText("\uD83D\uDC41");
+        }
+    }
+
+    @FXML
+    public void toggleConfirmPasswordVisibility(ActionEvent event) throws IOException {
+        confirmShow.textProperty().bindBidirectional(confirmPassField.textProperty());
+
+        boolean visibleConfirm = eyeButton.isSelected();
+        confirmPassField.setVisible(!visibleConfirm);
+        confirmPassField.setManaged(!visibleConfirm);
+        confirmShow.setVisible(visibleConfirm);
+        confirmShow.setManaged(visibleConfirm);
+        if (visibleConfirm) {
+            confirmShow.requestFocus();
+            confirmShow.positionCaret(confirmShow.getText().length());
+            eyeButton.setText("\uD83D\uDC41");
+        }
+        else {
+            confirmPassField.requestFocus();
+            confirmPassField.positionCaret(confirmPassField.getText().length());
+            eyeButton.setText("\uD83D\uDC41");
+        }
+    }
+
 
     @FXML
     public void switchToLoginScene(ActionEvent event) throws IOException {
@@ -56,6 +184,9 @@ public class RegisterController {
         stage.show();
     }
 
+    public void setScene(Scene scene) {
+        scene.getStylesheets().add(getClass().getResource("/styles/register.css").toExternalForm());
+    }
 
 
 }

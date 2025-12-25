@@ -13,6 +13,8 @@ public class HelloApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        LoginController controller = fxmlLoader.getController();
+        controller.setScene(scene);
         stage.setTitle("CryptoFile");
         stage.setScene(scene);
         stage.show();

@@ -1,0 +1,37 @@
+#userMsg {
+    -fx-text-fill: red;
+}
+#validMsg {
+    -fx-text-fill: red;
+}
+
+#emailMsg {
+    -fx-text-fill: red;
+}
+
+#requirementsMsg{
+    -fx-text-fill: red;
+}
+#backBtn{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+#backBtn:hover {
+    -fx-background-color: #edebeb;
+}
+
+#eyeButton {
+    -fx-background-color: white;
+}
+
+#eyeButton:hover {
+    -fx-background-color: #edebeb;
+}
+
+#eyeIcon {
+    -fx-background-color: white;
+}
+
+#eyeIcon:hover {
+    -fx-background-color: #edebeb;
+}

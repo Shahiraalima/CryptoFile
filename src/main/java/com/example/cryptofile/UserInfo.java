@@ -3,11 +3,13 @@ package com.example.cryptofile;
 public class UserInfo {
     private int user_id;
     private String username;
+    private String email;
     private String password;
     private String role;
 
-    public UserInfo(int user_id, String username, String password, String role) {
-        this.user_id = user_id;
+    public UserInfo() {}
+
+    public UserInfo(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -27,6 +29,14 @@ public class UserInfo {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

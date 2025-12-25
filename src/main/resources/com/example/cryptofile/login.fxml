@@ -49,6 +49,9 @@
                        <font>
                            <Font size="15.0" />
                        </font>
+                  <StackPane.margin>
+                     <Insets right="1.0" />
+                  </StackPane.margin>
                    </ToggleButton>
                </StackPane>
                <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#HandleLogin" text="Log in">
@@ -58,7 +61,7 @@
                </Button>
             <Label fx:id="errorMsg" alignment="CENTER">
                <VBox.margin>
-                  <Insets top="-30.0" />
+                  <Insets />
                </VBox.margin>
             </Label>
                <HBox fx:id="createAccountHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="1.0">

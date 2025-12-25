@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 
@@ -65,13 +64,12 @@ public class LoginController {
     }
 
     @FXML
-    public void HandleLogin(ActionEvent event) throws IOException, SQLException {
+    public void HandleLogin(ActionEvent event) throws IOException {
         String user = username.getText();
         String pass = password.getText();
 
         if(user.isEmpty() || pass.isEmpty()) {
             errorMsg.setText("Please enter username and password");
-            return;
         } else {
             UserDAO userDAO = new UserDAO();
             UserInfo validUser = userDAO.loginVerify(user, pass);
@@ -85,10 +83,8 @@ public class LoginController {
             } else {
                 errorMsg.setText("Invalid username or password");
             }
-
         }
     }
-
 
 
     @FXML
@@ -97,6 +93,8 @@ public class LoginController {
         Parent root = loader.load();
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
+        RegisterController controller = loader.getController();
+        controller.setScene(scene);
         stage.setTitle("CryptoFile");
         stage.setScene(scene);
         stage.show();
@@ -122,6 +120,10 @@ public class LoginController {
         stage.setTitle("CryptoFile");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void setScene (Scene scene) {
+        scene.getStylesheets().add(getClass().getResource("/styles/login.css").toExternalForm());
     }
 
 }

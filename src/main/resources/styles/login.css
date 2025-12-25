@@ -1,0 +1,10 @@
+#errorMsg {
+    -fx-text-fill: red;
+}
+#eyeButton {
+    -fx-background-color: white;
+}
+
+#eyeButton:hover {
+    -fx-background-color: #edebeb;
+}
