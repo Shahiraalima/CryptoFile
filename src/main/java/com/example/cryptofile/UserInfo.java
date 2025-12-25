@@ -1,13 +1,19 @@
 package com.example.cryptofile;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class UserInfo {
     private int user_id;
     private String username;
     private String email;
     private String password;
     private String role;
+    private String fullName;
+    private LocalDateTime account_created;
 
-    public UserInfo() {}
+    public UserInfo() {
+    }
 
     // Constructor for login verification
     public UserInfo(String username, String password, String role) {
@@ -55,4 +61,25 @@ public class UserInfo {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public LocalDateTime getAccount_created() {
+        return account_created;
+    }
+
+    public void setAccount_created(LocalDateTime account_created) {
+        this.account_created = account_created;
+    }
+
+    public String dateFormatter() {
+        return account_created.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy 'at' HH:mm"));
+    }
+
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserHomeController">
+<BorderPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserHomeController">
     <center>
-        <StackPane>
+        <StackPane fx:id="contentPane">
             <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;">
                 <VBox spacing="25" style="-fx-padding: 30;">
 
@@ -26,7 +27,7 @@
 
                         <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
                             <Label style="-fx-font-size: 28px;" text="📂" />
-                            <Label style="-fx-font-weight: bold;" text="24">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 35;" text="24">
                                 <font>
                                     <Font size="35.0" />
                                 </font></Label>
@@ -35,7 +36,7 @@
 
                         <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
                             <Label style="-fx-font-size: 28px;" text="🔒" />
-                            <Label style="-fx-font-weight: bold;" text="18">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 35;" text="18">
                                 <font>
                                     <Font size="35.0" />
                                 </font></Label>
@@ -44,7 +45,7 @@
 
                         <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
                             <Label style="-fx-font-size: 28px;" text="🔓" />
-                            <Label style="-fx-font-weight: bold;" text="6">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 35;" text="6">
                                 <font>
                                     <Font size="35.0" />
                                 </font></Label>
@@ -53,7 +54,7 @@
 
                         <VBox prefHeight="120" prefWidth="200" spacing="10" style="-fx-background-color: white; -fx-padding: 20;                                                    -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
                             <Label style="-fx-font-size: 28px;" text="💾" />
-                            <Label style="-fx-font-weight: bold;" text="2.4 GB">
+                            <Label style="-fx-font-weight: bold; -fx-font-size: 35;" text="2.4 GB">
                                 <font>
                                     <Font size="35.0" />
                                 </font></Label>
@@ -64,30 +65,45 @@
                     <VBox spacing="15">
                         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Quick Actions" />
                         <HBox alignment="CENTER" spacing="20">
-                            <VBox alignment="CENTER" prefHeight="180" prefWidth="300" spacing="15" style="-fx-background-color: white;">
-                                <Label style="-fx-font-size: 48px;" text="🔒" />
-                                <Label text="Encrypt File">
-                                    <font>
-                                        <Font size="24.0" />
-                                    </font></Label>
-                                <Label alignment="CENTER" text="Secure your files with encryption" />
-                            </VBox>
-                            <VBox alignment="CENTER"  prefHeight="180" prefWidth="300" spacing="15" style="-fx-background-color: white;">
-                                <Label style="-fx-font-size: 48px;" text="🔓" />
-                                <Label text="Decrypt File">
-                                    <font>
-                                        <Font size="24.0" />
-                                    </font></Label>
-                                <Label alignment="CENTER" text="Access your encrypted files" />
-                            </VBox>
-                            <VBox alignment="CENTER"  prefHeight="180" prefWidth="300" spacing="15" style="-fx-background-color: white;">
-                                <Label style="-fx-font-size: 48px;" text="📁" />
-                                <Label text="My Files">
-                                    <font>
-                                        <Font size="24.0" />
-                                    </font></Label>
-                                <Label alignment="CENTER" text="View and manage your files" />
-                            </VBox>
+                     <Button mnemonicParsing="false" onAction="#loadEncryptFile" prefHeight="150.0" prefWidth="250.0">
+                        <graphic>
+                                  <VBox alignment="CENTER" spacing="15" style="-fx-background-color: white;">
+                                      <Label style="-fx-font-size: 48px;" text="🔒" />
+                                      <Label text="Encrypt File">
+                                          <font>
+                                              <Font size="24.0" />
+                                          </font>
+                              </Label>
+                                      <Label alignment="CENTER" text="Secure your files with encryption" />
+                                  </VBox>
+                        </graphic>
+                     </Button>
+                     <Button mnemonicParsing="false" onAction="#loadDecryptFile" prefHeight="150.0" prefWidth="250.0">
+                        <graphic>
+                                  <VBox alignment="CENTER" spacing="15" style="-fx-background-color: white;">
+                                      <Label style="-fx-font-size: 48px;" text="🔓" />
+                                      <Label text="Decrypt File">
+                                          <font>
+                                              <Font size="24.0" />
+                                          </font>
+                              </Label>
+                                      <Label alignment="CENTER" text="Access your encrypted files" />
+                                  </VBox>
+                        </graphic>
+                     </Button>
+                     <Button mnemonicParsing="false" onAction="#loadAllFiles" prefHeight="150.0" prefWidth="250.0">
+                        <graphic>
+                                  <VBox alignment="CENTER" spacing="15" style="-fx-background-color: white;">
+                                      <Label style="-fx-font-size: 48px;" text="📁" />
+                                      <Label text="My Files">
+                                          <font>
+                                              <Font size="24.0" />
+                                          </font>
+                              </Label>
+                                      <Label alignment="CENTER" text="View and manage your files" />
+                                  </VBox>
+                        </graphic>
+                     </Button>
 
                         </HBox>
                     </VBox>
@@ -95,7 +111,7 @@
                         <HBox alignment="CENTER_LEFT">
                             <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Recent Activity" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Hyperlink  style="-fx-text-fill: #3498db; -fx-font-size: 13px;" text="View All" />
+                            <Hyperlink fx:id="activityLogsLink" onAction="#loadActivityLogs" style="-fx-text-fill: #3498db; -fx-font-size: 13px;" text="View All" />
                         </HBox>
                         <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;">
                             <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0;">

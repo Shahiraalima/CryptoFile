@@ -16,9 +16,8 @@ public class UserNavigationController {
     private String currentUser;
 
     @FXML
-    public void initialize(UserInfo userInfo) {
-        currentUser = userInfo.getUsername();
-        usernameLabel.setText(currentUser);
+    public void initialize() {
+        usernameLabel.setText(SessionManager.loggedInUser.getUsername());
         loadView("userHome.fxml");
     }
 
@@ -28,11 +27,6 @@ public class UserNavigationController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent view = loader.load();
             contentPane.getChildren().setAll(view);
-
-            if(fxmlFile.equals("userHome.fxml")){
-                UserHomeController controller = loader.getController();
-                controller.setName(currentUser);
-            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,11 +46,11 @@ public class UserNavigationController {
     }
     @FXML
     public void loadActivityLogs() {
-        loadView("activityLogs.fxml");
+        loadView("userActivityLogs.fxml");
     }
     @FXML
     public void loadMyFiles() {
-        loadView("myFiles.fxml");
+        loadView("userMyFiles.fxml");
     }
     @FXML
     public void loadProfile() {
@@ -66,7 +60,5 @@ public class UserNavigationController {
     public void handleLogout() {
         // Implement logout logic here
     }
-
-
 
 }

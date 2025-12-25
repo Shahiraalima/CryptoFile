@@ -19,15 +19,25 @@ public class UserDAO {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(query);) {
-                statement.setString(1, username);
-                statement.setString(2, password);
+            statement.setString(1, username);
+            statement.setString(2, password);
 
             ResultSet rs = statement.executeQuery();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 String user = rs.getString("username");
                 String pass = rs.getString("password");
                 String role = rs.getString("roles");
+
+                UserInfo currentUser = new UserInfo();
+                currentUser.setUsername(user);
+                currentUser.setRole(role);
+                currentUser.setPassword(pass);
+                currentUser.setFullName(rs.getString("full_name"));
+                currentUser.setEmail(rs.getString("email"));
+                currentUser.setAccount_created(rs.getTimestamp("account_created").toLocalDateTime());
+                SessionManager.loggedInUser = currentUser;
+
                 return new UserInfo(user, pass, role);
             } else {
                 return null;
@@ -44,34 +54,63 @@ public class UserDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
 
-             statement.setString(1, user.getUsername());
-             statement.setString(2, user.getEmail());
-             statement.setString(3, user.getPassword());
-             statement.setString(4, user.getRole());
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getRole());
 
-                int rowsInserted = statement.executeUpdate();
-                if (rowsInserted > 0) {
-                    return true;
-                }
-        } catch(SQLIntegrityConstraintViolationException e) {
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                return true;
+            }
+        } catch (SQLIntegrityConstraintViolationException e) {
             throw new RuntimeException("Registration failed: Username already exists");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Error during registration", e);
         }
-
         return false;
+    }
+
+    public boolean updateUserInfo(String username, String fullName, String email) {
+        String query = "UPDATE users SET full_name = ?, email = ? WHERE username = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setString(1, fullName);
+            statement.setString(2, email);
+            statement.setString(3, username);
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating user information", e);
+        }
+    }
+
+
+    public boolean updateUserPassword(String username, String newPass) {
+        String query = "UPDATE users SET password = ? WHERE username = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setString(1, newPass);
+            statement.setString(2, username);
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating user password", e);
+        }
     }
 
 
     // Check if username already exists in the database
     public boolean checkUsernameExists(String username) {
         String query = "SELECT 1 FROM users WHERE username = ?";
-        try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement statement = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
@@ -83,11 +122,11 @@ public class UserDAO {
     // Check if email already exists in the database
     public boolean checkEmailExists(String email) {
         String query = "SELECT 1 FROM users WHERE email = ?";
-        try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement statement = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
@@ -108,10 +147,13 @@ public class UserDAO {
             else if (Character.isDigit(ch)) hasDigit = true;
             else if ("!@#$%^&*()-+".indexOf(ch) >= 0) hasSpecial = true;
         }
-        if(!hasUpper) return "Add at least one uppercase letter.";
-        if(!hasLower) return "Add at least one lowercase letter.";
-        if(!hasDigit) return "Add at least one digit.";
-        if(!hasSpecial) return "Add at least one special character (!@#$%^&*()-+).";
+        if (!hasUpper) return "Add at least one uppercase letter.";
+        if (!hasLower) return "Add at least one lowercase letter.";
+        if (!hasDigit) return "Add at least one digit.";
+        if (!hasSpecial) return "Add at least one special character (!@#$%^&*()-+).";
         return "Strong";
     }
+
+
+
 }

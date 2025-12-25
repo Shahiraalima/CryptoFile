@@ -73,29 +73,8 @@ public class RegisterController {
             }
         });
 
-        passwordField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue){
-                String password = passwordField.getText();
-                if(!password.isEmpty()){
-                    UserDAO userDAO = new UserDAO();
-                    String strengthMsg = userDAO.checkPasswordStrength(password);
-                    if(!strengthMsg.isEmpty()){
-                        if(!strengthMsg.equals("Strong")){
-                            requirementsMsg.setText(strengthMsg);
-                            passwordStrengthMsg.setStyle("-fx-text-fill: red;");
-                            passwordStrengthMsg.setText("Password Strength: Weak");
-                        } else {
-                            requirementsMsg.setText("");
-                            passwordStrengthMsg.setStyle("-fx-text-fill: green;");
-                            passwordStrengthMsg.setText("Password Strength: Strong");
-                        }
-                    } else {
-                        requirementsMsg.setText("");
-                        passwordStrengthMsg.setText("");
-                    }
-                }
-            }
-        });
+        Shared.setupPasswordStrengthListener(passwordField, requirementsMsg, passwordStrengthMsg);
+
     }
 
 
@@ -136,45 +115,13 @@ public class RegisterController {
     // Toggle visibility for password field
     @FXML
     public void togglePasswordVisibility(ActionEvent event) throws IOException {
-        showPasswordField.textProperty().bindBidirectional(passwordField.textProperty());
-
-        boolean visible = eyeIcon.isSelected();
-        passwordField.setVisible(!visible);
-        passwordField.setManaged(!visible);
-        showPasswordField.setVisible(visible);
-        showPasswordField.setManaged(visible);
-        if (visible) {
-            showPasswordField.requestFocus();
-            showPasswordField.positionCaret(showPasswordField.getText().length());
-            eyeIcon.setText("\uD83D\uDC41");
-        }
-        else {
-            passwordField.requestFocus();
-            passwordField.positionCaret(passwordField.getText().length());
-            eyeIcon.setText("\uD83D\uDC41");
-        }
+        Shared.setupPassWordVisibilityToggle(passwordField, showPasswordField, eyeIcon);
     }
 
     // Toggle visibility for confirm password field
     @FXML
     public void toggleConfirmPasswordVisibility(ActionEvent event) throws IOException {
-        confirmShow.textProperty().bindBidirectional(confirmPassField.textProperty());
-
-        boolean visibleConfirm = eyeButton.isSelected();
-        confirmPassField.setVisible(!visibleConfirm);
-        confirmPassField.setManaged(!visibleConfirm);
-        confirmShow.setVisible(visibleConfirm);
-        confirmShow.setManaged(visibleConfirm);
-        if (visibleConfirm) {
-            confirmShow.requestFocus();
-            confirmShow.positionCaret(confirmShow.getText().length());
-            eyeButton.setText("\uD83D\uDC41");
-        }
-        else {
-            confirmPassField.requestFocus();
-            confirmPassField.positionCaret(confirmPassField.getText().length());
-            eyeButton.setText("\uD83D\uDC41");
-        }
+        Shared.setupPassWordVisibilityToggle(confirmPassField, confirmShow, eyeButton);
     }
 
 
