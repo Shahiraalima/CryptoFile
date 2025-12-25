@@ -1,5 +1,6 @@
 package com.example.cryptofile;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,8 +11,10 @@ import java.io.IOException;
 
 public class UserNavigationController {
 
-    @FXML private StackPane contentPane;
-    @FXML private Label usernameLabel;
+    @FXML
+    private StackPane contentPane;
+    @FXML
+    private Label usernameLabel;
 
     private String currentUser;
 
@@ -36,29 +39,37 @@ public class UserNavigationController {
     public void loadDashboard() {
         loadView("userHome.fxml");
     }
+
     @FXML
     public void loadEncryptFile() {
         loadView("encryptFile.fxml");
     }
+
     @FXML
     public void loadDecryptFile() {
         loadView("decryptFile.fxml");
     }
+
     @FXML
     public void loadActivityLogs() {
         loadView("userActivityLogs.fxml");
     }
+
     @FXML
     public void loadMyFiles() {
         loadView("userMyFiles.fxml");
     }
+
     @FXML
     public void loadProfile() {
         loadView("userProfile.fxml");
     }
+
     @FXML
-    public void handleLogout() {
-        // Implement logout logic here
+    public void handleLogout(ActionEvent event) throws IOException {
+        SessionManager.loggedInUser = null;
+        Shared shared = new Shared();
+        shared.switchScene(event, "login.fxml");
     }
 
 }

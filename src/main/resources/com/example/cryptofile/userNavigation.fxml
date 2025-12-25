@@ -81,7 +81,7 @@
 
             <VBox spacing="10" style="-fx-padding: 10;">
                 <Line endX="250" startX="0" style="-fx-stroke: #34495e; -fx-stroke-width: 1;" />
-                <Button alignment="CENTER_LEFT" maxWidth="Infinity" text="Logout">
+                <Button alignment="CENTER_LEFT" maxWidth="Infinity" onAction="#handleLogout" text="Logout">
                     <graphic>
                         <Label style="-fx-font-size: 16px;" text="➜]" />
                     </graphic>

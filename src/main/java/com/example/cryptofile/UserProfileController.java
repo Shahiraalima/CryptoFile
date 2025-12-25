@@ -94,7 +94,7 @@ public class UserProfileController {
         String newPass = newPasswordField.getText();
         String confirmNewPass = confirmNewPasswordField.getText();
 
-        if(!SessionManager.loggedInUser.getPassword().equals(currentPass)) {
+        if (!SessionManager.loggedInUser.getPassword().equals(currentPass)) {
             passwordMessageLabel.setStyle("-fx-text-fill: red;");
             passwordMessageLabel.setText("Current password is incorrect.");
             return;

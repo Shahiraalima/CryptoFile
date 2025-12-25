@@ -1,24 +1,39 @@
 package com.example.cryptofile;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class Shared {
 
+    public void switchScene(ActionEvent event, String fxmlFile) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Parent root = loader.load();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("CryptoFile");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void setupPasswordStrengthListener(PasswordField passwordField, Label requirementsMsg, Label passwordStrengthMsg) {
         passwordField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue){
+            if (!newValue) {
                 String password = passwordField.getText();
-                if(!password.isEmpty()){
+                if (!password.isEmpty()) {
                     UserDAO userDAO = new UserDAO();
                     String strengthMsg = userDAO.checkPasswordStrength(password);
-                    if(!strengthMsg.isEmpty()){
-                        if(!strengthMsg.equals("Strong")){
+                    if (!strengthMsg.isEmpty()) {
+                        if (!strengthMsg.equals("Strong")) {
                             requirementsMsg.setStyle("-fx-text-fill: red;");
                             requirementsMsg.setText(strengthMsg);
                             passwordStrengthMsg.setStyle("-fx-text-fill: red;");
@@ -50,8 +65,7 @@ public class Shared {
             showPasswordField.requestFocus();
             showPasswordField.positionCaret(showPasswordField.getText().length());
             eyeIcon.setText("\uD83D\uDC41");
-        }
-        else {
+        } else {
             passwordField.requestFocus();
             passwordField.positionCaret(passwordField.getText().length());
             eyeIcon.setText("\uD83D\uDC41");

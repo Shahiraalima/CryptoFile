@@ -10,8 +10,10 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 public class UserHomeController {
-    @FXML private Label welcomeLabel;
-    @FXML private StackPane contentPane;
+    @FXML
+    private Label welcomeLabel;
+    @FXML
+    private StackPane contentPane;
 
 
     @FXML
@@ -33,14 +35,17 @@ public class UserHomeController {
     public void loadEncryptFile() {
         loadView("encryptFile.fxml");
     }
+
     @FXML
     public void loadDecryptFile() {
         loadView("decryptFile.fxml");
     }
+
     @FXML
     public void loadAllFiles() {
         loadView("userMyFiles.fxml");
     }
+
     @FXML
     public void loadActivityLogs() {
         loadView("userActivityLogs.fxml");

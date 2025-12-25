@@ -16,13 +16,13 @@ public class DatabaseConnection {
     private static final String password;
 
     static {
-        try(var input = Files.newInputStream(Path.of("cryptofile.properties"), StandardOpenOption.READ)) {
+        try (var input = Files.newInputStream(Path.of("cryptofile.properties"), StandardOpenOption.READ)) {
             Properties prop = new Properties();
             prop.load(input);
 
-            user =  prop.getProperty("databaseUser");
+            user = prop.getProperty("databaseUser");
             password = System.getenv("MYSQL_PASS");
-            URL = "jdbc:mysql://" + prop.getProperty("serverName") + ":" + prop.getProperty("serverPort") +  "/" + prop.getProperty("databaseName");
+            URL = "jdbc:mysql://" + prop.getProperty("serverName") + ":" + prop.getProperty("serverPort") + "/" + prop.getProperty("databaseName");
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to load database properties", e);

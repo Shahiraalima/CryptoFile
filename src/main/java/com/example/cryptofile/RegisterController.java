@@ -16,40 +16,55 @@ import java.io.IOException;
 
 
 public class RegisterController {
-    @FXML Button backBtn;
+    @FXML
+    Button backBtn;
 
-    @FXML private Label userMsg;
-    @FXML private TextField userField;
+    @FXML
+    private Label userMsg;
+    @FXML
+    private TextField userField;
 
-    @FXML private Label emailMsg;
-    @FXML private TextField emailField;
+    @FXML
+    private Label emailMsg;
+    @FXML
+    private TextField emailField;
 
-    @FXML private PasswordField passwordField;
-    @FXML private TextField showPasswordField;
-    @FXML private ToggleButton eyeIcon;
-    @FXML private Label requirementsMsg;
-    @FXML private Label passwordStrengthMsg;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private TextField showPasswordField;
+    @FXML
+    private ToggleButton eyeIcon;
+    @FXML
+    private Label requirementsMsg;
+    @FXML
+    private Label passwordStrengthMsg;
 
-    @FXML private PasswordField confirmPassField;
-    @FXML private TextField confirmShow;
-    @FXML private ToggleButton eyeButton;
+    @FXML
+    private PasswordField confirmPassField;
+    @FXML
+    private TextField confirmShow;
+    @FXML
+    private ToggleButton eyeButton;
 
-    @FXML private Label validMsg;
-    @FXML private Hyperlink loginLink;
+    @FXML
+    private Label validMsg;
+    @FXML
+    private Hyperlink loginLink;
 
 
     // Initialize method to set up listeners for real-time validation for username, email, and password fields
     @FXML
-    public void initialize(){
+    public void initialize() {
         loginLink.setVisible(false);
 
         userField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue){
+            if (!newValue) {
                 String username = userField.getText();
-                if(!username.isEmpty()){
+                if (!username.isEmpty()) {
                     UserDAO userDAO = new UserDAO();
                     boolean exists = userDAO.checkUsernameExists(username);
-                    if(exists){
+                    if (exists) {
                         userMsg.setText("Username is already taken.");
                     } else {
                         userMsg.setText("");
@@ -59,12 +74,12 @@ public class RegisterController {
         });
 
         emailField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue){
+            if (!newValue) {
                 String email = emailField.getText();
-                if(!email.isEmpty()){
+                if (!email.isEmpty()) {
                     UserDAO userDAO = new UserDAO();
                     boolean exists = userDAO.checkEmailExists(email);
-                    if(exists){
+                    if (exists) {
                         emailMsg.setText("Email is already registered.");
                     } else {
                         emailMsg.setText("");
@@ -128,13 +143,8 @@ public class RegisterController {
     // Navigate back to log in scene upon clicking back button and the back to login hyperlink upon registration successfully
     @FXML
     public void switchToLoginScene(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("CryptoFile");
-        stage.setScene(scene);
-        stage.show();
+        Shared shared = new Shared();
+        shared.switchScene(event, "login.fxml");
     }
 
     // Add CSS to the scene
