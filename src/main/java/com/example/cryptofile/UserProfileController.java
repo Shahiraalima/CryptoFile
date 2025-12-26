@@ -79,14 +79,9 @@ public class UserProfileController {
         }
     }
 
-    public void handleCancelInfo(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("userNavigation.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("CryptoFile");
-        stage.setScene(scene);
-        stage.show();
+    public void handleCancel(ActionEvent event) throws IOException {
+        Shared shared = new Shared();
+        shared.switchScene(event, "userNavigation.fxml");
     }
 
     public void handleChangePassword(ActionEvent event) throws IOException {
@@ -116,14 +111,6 @@ public class UserProfileController {
             passwordMessageLabel.setText("Failed to change password. Please try again.");
         }
     }
-
-    public void handleCancelPassword(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("userNavigation.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("CryptoFile");
-        stage.setScene(scene);
-        stage.show();
-    }
 }
+
+
