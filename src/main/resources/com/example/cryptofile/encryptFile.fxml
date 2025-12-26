@@ -42,7 +42,7 @@
 
                     <!-- File Picker Box -->
                     <VBox fx:id="filePickerBox" spacing="10" style="-fx-padding: 0;">
-                        <StackPane fx:id="browseBox" style="-fx-alignment: center; -fx-cursor: hand; -fx-pref-height: 150;">
+                        <StackPane fx:id="browseBox" onMouseClicked="#handleBrowseFiles" style="-fx-alignment: center; -fx-cursor: hand; -fx-pref-height: 150;">
                             <VBox alignment="CENTER" spacing="10" style="-fx-border-style: dashed; -fx-border-width: 1;">
                                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -55,12 +55,21 @@
                     </VBox>
                     <VBox prefWidth="100.0">
                         <children>
-                            <Label text="Selected Files (0)">
-                                <font>
-                                    <Font size="18.0" />
-                                </font>
-                            </Label>
-                            <ListView editable="true" maxHeight="150.0" minHeight="0.0" prefHeight="0.0" prefWidth="200.0" />
+                     <HBox>
+                        <children>
+                           <HBox HBox.hgrow="ALWAYS">
+                              <children>
+                                        <Label fx:id="fileCountLabel" text="Selected Files (0)" HBox.hgrow="ALWAYS">
+                                            <font>
+                                                <Font size="18.0" />
+                                            </font>
+                                        </Label>
+                              </children>
+                           </HBox>
+                           <Button fx:id="removeAllBtn" mnemonicParsing="false" onAction="#removeAllFiles" text="Remove all" visible="false" />
+                        </children>
+                     </HBox>
+                            <ListView fx:id="listView" editable="true" maxHeight="150.0" minHeight="0.0" prefHeight="0.0" prefWidth="200.0" />
                         </children>
                     </VBox>
                 </VBox>
@@ -79,7 +88,7 @@
                         <!-- Password -->
                         <Label text="Encryption Password:" GridPane.columnIndex="0" />
                         <VBox spacing="1.0" GridPane.columnIndex="1">
-                            <Label />
+                            <Label fx:id="requirementsLabel" />
                             <StackPane>
                                 <PasswordField fx:id="passwordField" promptText="Enter strong password" style="-fx-font-size: 14px; -fx-padding: 10;" />
                                 <TextField fx:id="showPasswordField" managed="false" promptText="Enter strong password" style="-fx-font-size:  14px; -fx-padding: 10;" visible="false" />
@@ -90,22 +99,30 @@
                         <!-- Confirm Password -->
                         <Label text="Confirm Password:" GridPane.columnIndex="0" GridPane.rowIndex="1">
                      <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <padding>
                         <Insets bottom="18.0" />
-                     </GridPane.margin></Label>
-                        <StackPane GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <PasswordField fx:id="confirmPasswordField" promptText="Re-enter password" style="-fx-font-size: 14px; -fx-padding: 10;">
-                                <StackPane.margin>
-                                    <Insets bottom="18.0" />
-                                </StackPane.margin>
-                            </PasswordField>
-                            <TextField fx:id="showConfirmPasswordField" managed="false" promptText="Re-enter password" style="-fx-font-size: 14px; -fx-padding: 10;" visible="false" />
-                        </StackPane>
+                     </padding></Label>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                              <StackPane>
+                                  <PasswordField fx:id="confirmPasswordField" promptText="Re-enter password" style="-fx-font-size: 14px; -fx-padding: 10;">
+                                      <StackPane.margin>
+                                          <Insets />
+                                      </StackPane.margin>
+                                  </PasswordField>
+                                  <TextField fx:id="showConfirmPasswordField" managed="false" promptText="Re-enter password" style="-fx-font-size: 14px; -fx-padding: 10;" visible="false" />
+                              </StackPane>
+                        <Label fx:id="passwordMatchLabel" text=" " />
+                     </children>
+                  </VBox>
 
                         <!-- Output Location -->
                         <Label text="Save Encrypted File To:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <TextField fx:id="outputPathField" editable="false" promptText="Select output location" style="-fx-font-size:  14px; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
-                            <Button fx:id="browseOutputBtn" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;" text="Browse" />
+                            <TextField fx:id="outputFilePath" editable="false" promptText="Select output location" style="-fx-font-size:  14px; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="browseOutputBtn" onAction="#handleBrowseOutputPath" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;" text="Browse" />
                         </HBox>
                         <rowConstraints>
                             <RowConstraints />
@@ -140,7 +157,7 @@
 
                     <HBox alignment="CENTER_LEFT" spacing="15">
                         <Button fx:id="encryptBtn" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding:  15 40; -fx-background-radius:  10; -fx-cursor: hand; -fx-font-weight: bold;" text="🔒 Encrypt File" />
-                        <Button fx:id="resetBtn" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 15 30; -fx-background-radius:  10; -fx-cursor:  hand;" text="Reset" />
+                        <Button fx:id="resetBtn" onAction="#handleResetButton" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 15 30; -fx-background-radius:  10; -fx-cursor:  hand;" text="Reset" />
                         <Label fx:id="statusLabel" style="-fx-font-size:  14px;" wrapText="true" />
                     </HBox>
                 </VBox>
