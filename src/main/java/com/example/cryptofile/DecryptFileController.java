@@ -1,0 +1,98 @@
+package com.example.cryptofile;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+public class DecryptFileController {
+    @FXML private StackPane browseBox;
+    @FXML private Button removeAllBtn;
+    @FXML private ListView<File> listView;
+    @FXML private Label fileCountLabel;
+
+    @FXML private TextField outputFilePath;
+    @FXML private Button browseOutputBtn;
+
+    @FXML private Label requirementsLabel;
+    @FXML private PasswordField passwordField;
+    @FXML private Label passwordStrengthLabel;
+
+
+    private List<File> selectedFiles;
+    private ObservableList<File> fileList = FXCollections.observableArrayList();
+
+    @FXML
+    public void initialize() {
+        EncryptAndDecryptUtil.customListview(listView, fileCountLabel, outputFilePath);
+
+        browseBox.setOnMouseClicked(event ->
+                EncryptAndDecryptUtil.handleBrowseFiles(selectedFiles, listView, fileList, browseBox, removeAllBtn, fileCountLabel, outputFilePath));
+
+        browseOutputBtn.setOnAction(event -> EncryptAndDecryptUtil.handleBrowseOutputPath(listView, browseBox, removeAllBtn, outputFilePath));
+
+        removeAllBtn.setOnAction(event -> EncryptAndDecryptUtil.removeAllFiles(listView, fileCountLabel, removeAllBtn, outputFilePath));
+
+        outputFilePath.setOnAction(event -> EncryptAndDecryptUtil.handleBrowseOutputPath(listView, browseBox, removeAllBtn, outputFilePath));
+    }
+
+    @FXML
+    public void handleDecryptButton() {
+        if(listView.getItems().isEmpty()) {
+            Label alertLabel = new Label("Please Select a File to Start Decryption");
+            Shared.showAlert(alertLabel);
+            return;
+        } else if (passwordField.getText().isEmpty()) {
+            Label alertLabel = new Label("Please Enter the Password to Start Decryption");
+            Shared.showAlert(alertLabel);
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("decProgressPopup.fxml"));
+            Parent popup = loader.load();
+
+            DecryptPopupController controller = loader.getController();
+            controller.loadData(fileList, passwordField.getText());
+
+            Scene scene = new Scene(popup, 600, 500);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Cryptofile");
+
+            controller.setStage(stage);
+
+            stage.setOnCloseRequest(event -> {
+                event.consume();
+                controller.handleCloseButton();
+            });
+
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    // Reset all fields and clear the list view
+    @FXML
+    public void handleResetButton() {
+        listView.getItems().clear();
+        listView.setPrefHeight(0);
+        outputFilePath.setText("");
+        fileCountLabel.setText("Selected files (0)");
+        removeAllBtn.setVisible(false);
+        passwordField.copy();
+        requirementsLabel.setText("");
+        passwordStrengthLabel.setText("");
+    }
+
+}

@@ -22,35 +22,31 @@
       <ListView fx:id="listView" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="3 succeeded, 1 failed">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER_LEFT" prefHeight="0.0">
-               <children>
-                  <Button mnemonicParsing="false" text="Cancel All">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="2.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Region prefHeight="200.0" prefWidth="455.0" />
-                  <Button fx:id="closeButton" mnemonicParsing="false" text="Close" visible="false">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
+       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+           <Label text="3 succeeded, 1 failed">
+              <font>
+                  <Font size="14.0"/>
+              </font>
+           </Label>
+           <HBox alignment="CENTER_LEFT" prefHeight="0.0">
                <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                </padding>
-            </HBox>
-         </children>
-      </VBox>
+               <Button mnemonicParsing="false" text="Cancel All">
+                   <font>
+                       <Font size="14.0"/>
+                   </font>
+                   <HBox.margin>
+                       <Insets left="2.0"/>
+                   </HBox.margin>
+               </Button>
+               <Region prefHeight="200.0" prefWidth="455.0"/>
+               <Button fx:id="closeButton" mnemonicParsing="false" text="Close" visible="false">
+                   <font>
+                       <Font size="14.0"/>
+                   </font>
+               </Button>
+           </HBox>
+       </VBox>
    </bottom>
 </BorderPane>

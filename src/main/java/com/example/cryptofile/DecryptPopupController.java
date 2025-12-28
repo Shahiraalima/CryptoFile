@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EncryptPopupController {
+public class DecryptPopupController {
     @FXML private ListView<File> listView;
     @FXML private Button closeButton;
 
@@ -38,11 +38,11 @@ public class EncryptPopupController {
     public void loadData(ObservableList<File> fileList, String password) {
         listView.setItems(fileList);
         customLIstView();
-        performEncryption(fileList, password);
+        performDecryption(fileList, password);
     }
 
     // Method to perform encryption in background parallelly
-    private void performEncryption(ObservableList<File> fileList, String password) {
+    private void performDecryption(ObservableList<File> fileList, String password) {
         Task<Void> encTask = new Task<>() {
 
             private final Map<File, Long> lastUpdatedTime = new HashMap<>();
@@ -62,11 +62,11 @@ public class EncryptPopupController {
                             if (isCancelled()) return;
 
                             String inputFile = file.getAbsolutePath();
-                            String outputFile = inputFile + ".enc";
+                            String outputFile = inputFile + ".dec";
 
                             long startTime = System.nanoTime();
 
-                            EncryptAndDecryptUtil.encryptFile(inputFile, outputFile, password, progress -> {
+                            EncryptAndDecryptUtil.decryptFile(inputFile, outputFile, password, progress -> {
                                 long currentTime = System.currentTimeMillis();
                                 boolean shouldUpdate = false;
 
@@ -112,10 +112,7 @@ public class EncryptPopupController {
                             Label tick = greenTickMap.get(file);
                             if (tick != null && finalFlag) tick.setVisible(true);
                         });
-
-
                     });
-
                 }
                 latch.await();
                 executor.shutdown();
@@ -123,19 +120,19 @@ public class EncryptPopupController {
             }
         };
 
-        encTask.setOnSucceeded(event -> onEncryptionComplete());
+        encTask.setOnSucceeded(event -> onDecryptionComplete());
 
         encTask.setOnFailed(event -> {
             Label alertLabel = new Label("Encryption process failed");
             Shared.showAlert(alertLabel);
-            onEncryptionComplete();
+            onDecryptionComplete();
         });
 
         new Thread(encTask).start();
     }
 
     // Method called when encryption is complete
-    private void onEncryptionComplete() {
+    private void onDecryptionComplete() {
         encComplete = true;
         stage.setOnCloseRequest(null);
         closeButton.setOnAction(event -> stage.close());
@@ -144,7 +141,7 @@ public class EncryptPopupController {
     // Handle close button action
     public void handleCloseButton() {
         if (!encComplete) {
-            Label alertLabel = new Label("Please wait until encryption is complete");
+            Label alertLabel = new Label("Please wait until decryption is complete");
             Shared.showAlert(alertLabel);
         } else {
             stage.close();
@@ -232,3 +229,4 @@ public class EncryptPopupController {
 //TODO: add cancel button for each file to stop encryption of that particular file
 //TODO: cancel all button to stop encryption of all files
 //TODO: database to keep track of encrypted files and avoid re-encryption
+

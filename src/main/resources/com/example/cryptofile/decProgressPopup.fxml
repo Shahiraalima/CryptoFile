@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@styles/encPopup.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.DecryptPopupController">
+    <top>
+        <Label text="Decryption Progress" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+    </top>
+    <center>
+        <ListView fx:id="listView" BorderPane.alignment="CENTER" />
+    </center>
+    <bottom>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <Label text="3 succeeded, 1 failed">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="0.0">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Button mnemonicParsing="false" text="Cancel All">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="2.0"/>
+                    </HBox.margin>
+                </Button>
+                <Region prefHeight="200.0" prefWidth="455.0"/>
+                <Button fx:id="closeButton" mnemonicParsing="false" text="Close" visible="false">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Button>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>
+

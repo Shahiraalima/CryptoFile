@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -42,7 +41,7 @@
 
                     <!-- File Picker Box -->
                     <VBox fx:id="filePickerBox" spacing="10" style="-fx-padding: 0;">
-                        <StackPane fx:id="browseBox" onMouseClicked="#handleBrowseFiles" style="-fx-alignment: center; -fx-cursor: hand; -fx-pref-height: 150;">
+                        <StackPane fx:id="browseBox" style="-fx-alignment: center; -fx-cursor: hand; -fx-pref-height: 150;">
                             <VBox alignment="CENTER" spacing="10" style="-fx-border-style: dashed; -fx-border-width: 1;">
                                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -66,7 +65,7 @@
                                         </Label>
                               </children>
                            </HBox>
-                           <Button fx:id="removeAllBtn" mnemonicParsing="false" onAction="#removeAllFiles" text="Remove all" visible="false" />
+                           <Button fx:id="removeAllBtn" mnemonicParsing="false" text="Remove all" visible="false" />
                         </children>
                      </HBox>
                             <ListView fx:id="listView" editable="true" maxHeight="150.0" minHeight="0.0" prefHeight="0.0" prefWidth="200.0" />
@@ -86,11 +85,11 @@
                         </columnConstraints>
 
                         <!-- Password -->
-                        <Label text="Encryption Password:" GridPane.columnIndex="0" />
+                        <Label text="Enter Password:" GridPane.columnIndex="0" />
                         <VBox spacing="1.0" GridPane.columnIndex="1">
                             <Label fx:id="requirementsLabel" />
                             <StackPane>
-                                <PasswordField fx:id="passwordField" promptText="Enter strong password" style="-fx-font-size: 14px; -fx-padding: 10;" />
+                                <PasswordField fx:id="passwordField" promptText="Enter a strong password" style="-fx-font-size: 14px; -fx-padding: 10;" />
                                 <TextField fx:id="showPasswordField" managed="false" promptText="Enter strong password" style="-fx-font-size:  14px; -fx-padding: 10;" visible="false" />
                             </StackPane>
                             <Label fx:id="passwordStrengthLabel" style="-fx-font-size: 11px; -fx-text-fill: #95a5a6;" />
@@ -107,7 +106,7 @@
                   <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                               <StackPane>
-                                  <PasswordField fx:id="confirmPasswordField" promptText="Re-enter password" style="-fx-font-size: 14px; -fx-padding: 10;">
+                                  <PasswordField fx:id="confirmPasswordField" promptText="Re-enter the password" style="-fx-font-size: 14px; -fx-padding: 10;">
                                       <StackPane.margin>
                                           <Insets />
                                       </StackPane.margin>
@@ -122,7 +121,7 @@
                         <Label text="Save Encrypted File To:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <TextField fx:id="outputFilePath" editable="false" promptText="Select output location" style="-fx-font-size:  14px; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
-                            <Button fx:id="browseOutputBtn" onAction="#handleBrowseOutputPath" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;" text="Browse" />
+                            <Button fx:id="browseOutputBtn" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;" text="Browse" />
                         </HBox>
                         <rowConstraints>
                             <RowConstraints />
@@ -149,11 +148,6 @@
 
                 <!-- 4️⃣ Encrypt Button & Progress -->
                 <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius:  12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
-                    <VBox fx:id="progressBox" managed="false" spacing="10" visible="false">
-                        <Label style="-fx-font-size:  14px; -fx-font-weight: bold;" text="Encrypting file..." />
-                        <ProgressBar fx:id="progressBar" prefHeight="25" prefWidth="Infinity" progress="0" />
-                        <Label fx:id="progressLabel" style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;" text="0%" />
-                    </VBox>
 
                     <HBox alignment="CENTER_RIGHT" spacing="15">
                         <Button fx:id="encryptBtn" onAction="#handleEncryptButton" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding:  15 40; -fx-background-radius:  10; -fx-cursor: hand; -fx-font-weight: bold;" text="🔒 Encrypt File" />
