@@ -46,6 +46,9 @@ public class EncryptFileController {
 
 
     //TODO: password must be of 8 characters regardless of strong or weak..show alert..
+    //TODO: password match bug... popup is opening regardless of match or not..
+    // TODO: delete og file... zip file
+    //TODO: for popup close button think something like.. are you sure you want to cancel encryption? progress will be lost.
 
 
     @FXML
@@ -75,10 +78,10 @@ public class EncryptFileController {
         fileChooser.setTitle("Select Files to Encrypt");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Files", "*.*"),
-                new FileChooser. ExtensionFilter("Documents", "*.pdf", "*. doc", "*.docx", "*.txt", "*.xlsx", "*.pptx"),
-                new FileChooser.ExtensionFilter("Images", "*. jpg", "*.jpeg", "*. png", "*.gif", "*.bmp", "*.svg"),
-                new FileChooser.ExtensionFilter("Videos", "*.mp4", "*. avi", "*.mkv", "*.mov", "*.wmv"),
-                new FileChooser. ExtensionFilter("Audio", "*.mp3", "*. wav", "*.flac", "*.aac"),
+                new FileChooser. ExtensionFilter("Documents", "*.pdf", "*.doc", "*.docx", "*.txt", "*.xlsx", "*.pptx"),
+                new FileChooser.ExtensionFilter("Images", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp", "*.svg"),
+                new FileChooser.ExtensionFilter("Videos", "*.mp4", "*.avi", "*.mkv", "*.mov", "*.wmv"),
+                new FileChooser. ExtensionFilter("Audio", "*.mp3", "*.wav", "*.flac", "*.aac"),
                 new FileChooser. ExtensionFilter("Archives", "*.zip", "*.rar", "*.7z", "*.tar", "*.gz")
         );
 
@@ -134,6 +137,7 @@ public class EncryptFileController {
             return;
         } else {
             boolean check = checkPasswordMatch();
+            System.out.println(check);
             if(!check) return;
         }
         try {
@@ -141,17 +145,19 @@ public class EncryptFileController {
             Parent popup = loader.load();
 
             EncryptPopupController controller = loader.getController();
-            controller.loadListView(fileList);
+            controller.loadData(fileList, passwordField.getText());
 
             Scene scene = new Scene(popup, 600, 500);
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("Cryptofile");
 
-//            stage.setOnCloseRequest(event -> {
-//                event.consume();
-//                controller.handleCloseButton();
-//            });
+            controller.setStage(stage);
+
+            stage.setOnCloseRequest(event -> {
+                event.consume();
+                controller.handleCloseButton();
+            });
 
             stage.show();
         } catch (IOException e) {
@@ -207,7 +213,7 @@ public class EncryptFileController {
                 String password = passwordField.getText();
                 String confirmPassword = confirmPasswordField.getText();
                 if(!confirmPassword.isEmpty()) {
-                    if(!password.equals(confirmPassword)) {
+                    if(!confirmPassword.equals(password)) {
                         passwordMatchLabel.setStyle("-fx-text-fill: red;");
                         passwordMatchLabel.setText("Passwords do not match");
                         allMatch.set(false);
