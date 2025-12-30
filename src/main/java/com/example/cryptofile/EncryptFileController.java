@@ -48,8 +48,6 @@ public class EncryptFileController {
 
 
     //TODO: password must be of 8 characters regardless of strong or weak..show alert..
-    //TODO: password match bug... popup is opening regardless of match or not..
-    // TODO: delete og file... zip file
     //TODO: for popup close button think something like.. are you sure you want to cancel encryption? progress will be lost.
 
 
@@ -87,7 +85,6 @@ public class EncryptFileController {
             return;
         } else {
             boolean check = checkPasswordMatch();
-            System.out.println(check);
             if(!check) return;
         }
         try {
@@ -135,23 +132,16 @@ public class EncryptFileController {
 
     // Check if password and confirm password match
     private boolean checkPasswordMatch() {
-        AtomicBoolean allMatch = new AtomicBoolean(true);
-        confirmPasswordField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue) {
-                String password = passwordField.getText();
-                String confirmPassword = confirmPasswordField.getText();
-                if(!confirmPassword.isEmpty()) {
-                    if(!confirmPassword.equals(password)) {
-                        passwordMatchLabel.setStyle("-fx-text-fill: red;");
-                        passwordMatchLabel.setText("Passwords do not match");
-                        allMatch.set(false);
-                    }
-                } else {
-                    passwordMatchLabel.setText("");
-                    allMatch.set(true);
-                }
-            }
-        });
-        return allMatch.get();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+        boolean f = true;
+        if(!confirmPassword.equals(password)) {
+            passwordMatchLabel.setStyle("-fx-text-fill: red;");
+            passwordMatchLabel.setText("Passwords do not match");
+            f=false;
+        } else {
+            passwordMatchLabel.setText("");
+        }
+        return f;
     }
 }

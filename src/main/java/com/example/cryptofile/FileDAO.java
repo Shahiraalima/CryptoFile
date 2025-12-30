@@ -2,7 +2,6 @@ package com.example.cryptofile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

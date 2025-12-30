@@ -82,4 +82,14 @@ public class Shared {
             eyeIcon.setText("\uD83D\uDC41");
         }
     }
+
+    public static String formatFIleSize(long sizeInBytes) {
+        if (sizeInBytes < 1024) {
+            return sizeInBytes + " B";
+        }
+
+        int exp = (int) (Math.log(sizeInBytes) / Math.log(1024));
+        String pre = "KMGTPE".charAt(exp - 1) + "B";
+        return String.format("%.1f %s", sizeInBytes / Math.pow(1024, exp), pre);
+    }
 }

@@ -17,5 +17,3 @@ public class HelloApplication extends Application {
         stage.show();
     }
 }
-
-//todo:

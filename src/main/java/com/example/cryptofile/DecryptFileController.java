@@ -23,9 +23,7 @@ public class DecryptFileController {
     @FXML private TextField outputFilePath;
     @FXML private Button browseOutputBtn;
 
-    @FXML private Label requirementsLabel;
     @FXML private PasswordField passwordField;
-    @FXML private Label passwordStrengthLabel;
 
 
     private List<File> selectedFiles;
@@ -90,9 +88,7 @@ public class DecryptFileController {
         outputFilePath.setText("");
         fileCountLabel.setText("Selected files (0)");
         removeAllBtn.setVisible(false);
-        passwordField.copy();
-        requirementsLabel.setText("");
-        passwordStrengthLabel.setText("");
+        passwordField.clear();
     }
 
 }

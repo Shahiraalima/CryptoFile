@@ -59,9 +59,20 @@ public class EncryptPopupController {
                 for (File file : fileList) {
                     executor.submit(() -> {
 
+                        LogInfo logInfo = new LogInfo();
+                        logInfo.setUser_id(SessionManager.loggedInUser.getUser_id());
+                        logInfo.setFile_name(file.getName());
+                        logInfo.setFile_size(file.length());
+                        logInfo.setAction("encrypt");
+
+
                         boolean flag = false;
                         try {
-                            if (isCancelled()) return;
+                            if (isCancelled()) {
+                                logInfo.setStatus("cancelled");
+                                LogDAO.logActivity(logInfo);
+                                return;
+                            }
 
                             String inputFile = file.getAbsolutePath();
                             String outputFile = inputFile + ".enc";
@@ -126,6 +137,9 @@ public class EncryptPopupController {
                             long millisecondsTaken = (endTime - startTime) / 1_000_000;
                             String timeText = String.format("Time: %.2f ms", (double) millisecondsTaken);// TODO: improve time format
 
+                            logInfo.setStatus("success");
+                            LogDAO.logSuccess(logInfo);
+
                             // Update time label on the JavaFX Application Thread
                             Platform.runLater(() -> {
                                 Label timeLabel = timeLabelMap.get(file);
@@ -136,6 +150,8 @@ public class EncryptPopupController {
 
                             flag = true;
                         } catch (Exception e) {
+                            logInfo.setStatus("failed");
+                            LogDAO.logFailure(logInfo);
                             e.printStackTrace();
                         } finally {
                             latch.countDown();
@@ -265,4 +281,3 @@ public class EncryptPopupController {
 
 //TODO: add cancel button for each file to stop encryption of that particular file
 //TODO: cancel all button to stop encryption of all files
-//TODO: database to keep track of encrypted files and avoid re-encryption
