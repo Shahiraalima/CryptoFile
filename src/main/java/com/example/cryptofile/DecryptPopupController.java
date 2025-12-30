@@ -13,13 +13,20 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class DecryptPopupController {
     @FXML private ListView<File> listView;
     @FXML private Button closeButton;
+    @FXML private Button cancelAllButton;
+    @FXML private Label statusLabel;
+
 
     private Label listFileName, listFileSize, greenTick, fileIcon, timeNeededLabel;
     private HBox fileNameHBox, nameAndTick, row;
@@ -28,10 +35,20 @@ public class DecryptPopupController {
     private Button deleteButton;
 
     private Stage stage;
-    private boolean encComplete = false;
+    private boolean decComplete = false;
+    private final Map<File, Label> fileLabelMap = new ConcurrentHashMap<>();
     private final Map<File, ProgressBar> progressBarMap = new HashMap<>();
     private final Map<File, Label> greenTickMap = new HashMap<>();
     private final Map<File, Label> timeLabelMap = new HashMap<>();
+    private final Map<File, AtomicBoolean> cancelFlagMap = new ConcurrentHashMap<>();
+    private final Map<File, HBox> rowMap = new HashMap<>();
+
+    private Task<Void> task;
+
+
+    private AtomicInteger successCount = new AtomicInteger(0);
+    private AtomicInteger failedCount = new AtomicInteger(0);
+    private AtomicInteger cancelledCount = new AtomicInteger(0);
 
 
     // Method to load data into the ListView and start encryption
@@ -43,7 +60,12 @@ public class DecryptPopupController {
 
     // Method to perform encryption in background parallelly
     private void performDecryption(ObservableList<File> fileList, String password) {
-        Task<Void> encTask = new Task<>() {
+
+        for (File file : fileList) {
+            cancelFlagMap.put(file, new AtomicBoolean(false));
+        }
+
+        task = new Task<>() {
 
             private final Map<File, Long> lastUpdatedTime = new HashMap<>();
             private static final long UPDATE_INTERVAL = 10;
@@ -65,25 +87,29 @@ public class DecryptPopupController {
 
                         boolean flag = false;
                         try {
-                            if (isCancelled()) {
+                            if (isCancelled() || cancelFlagMap.get(file).get()) {
+                                cancelledCount.getAndIncrement();
                                 logInfo.setStatus("cancelled");
-                                LogDAO.logActivity(logInfo);
+                                LogDAO.logCancelled(logInfo);
+                                markFileCancelled(file);
+                                latch.countDown();
                                 return;
                             }
 
                             String inputFile = file.getAbsolutePath();
-                            String outputFile = inputFile + ".dec";
+                            String outputFile = Shared.formatFileName(inputFile) + ".dec";
 
                             FileDAO fileDAO = new FileDAO();
                             String fileHash = fileDAO.getFileHash(file);
                             boolean fileEncrypted = fileDAO.validityEncryption(fileHash, SessionManager.loggedInUser.getUser_id());
                             if(!fileEncrypted) {
+                                failedCount.getAndIncrement();
                                 Platform.runLater(() -> {
                                     Label alertLabel = new Label("File " + file.getName() + " is not encrypted by this application");
                                     Shared.showAlert(alertLabel);
                                 });
                                 logInfo.setStatus("failed");
-                                LogDAO.logActivity(logInfo);
+                                LogDAO.logFailure(logInfo);
                                 latch.countDown();
                                 return;
                             }
@@ -91,6 +117,10 @@ public class DecryptPopupController {
                             long startTime = System.nanoTime();
 
                             EncryptAndDecryptUtil.decryptFile(inputFile, outputFile, password, progress -> {
+                                if (cancelFlagMap.get(file).get()) {
+                                    return;
+                                }
+
                                 long currentTime = System.currentTimeMillis();
                                 boolean shouldUpdate = false;
 
@@ -112,19 +142,29 @@ public class DecryptPopupController {
                                 }
                             });
 
+                            if(cancelFlagMap.get(file).get()) {
+                                cancelledCount.getAndIncrement();
+                                logInfo.setStatus("cancelled");
+                                LogDAO.logCancelled(logInfo);
+                                markFileCancelled(file);
+                                latch.countDown();
+                                return;
+                            }
+
                             FileInfo fileInfo = new FileInfo();
                             fileInfo.setUser_id(SessionManager.loggedInUser.getUser_id());
                             fileInfo.setOg_file_hash(fileHash);
-                            fileInfo.setEncrypted_file_name(outputFile.substring(outputFile.lastIndexOf(File.separator) + 1));
+                            String f = outputFile.substring(outputFile.lastIndexOf(File.separator) + 1);
+                            fileInfo.setEncrypted_file_name(Shared.formatFileName(f));
                             fileInfo.setEncrypted_file_size((long) new File(outputFile).length());
 
                             fileDAO.updateForDecryption(fileInfo);
 
                             long endTime = System.nanoTime();
                             long millisecondsTaken = (endTime - startTime) / 1_000_000;
-                            String timeText = String.format("Time: %.2f ms", (double) millisecondsTaken); // TODO: improve time format
+                            String timeText = Shared.formatTimeDuration(millisecondsTaken);
 
-
+                            successCount.getAndIncrement();
                             logInfo.setStatus("success");
                             LogDAO.logSuccess(logInfo);
 
@@ -139,6 +179,7 @@ public class DecryptPopupController {
 
                             flag = true;
                         } catch (Exception e) {
+                            failedCount.getAndIncrement();
                             logInfo.setStatus("failed");
                             LogDAO.logFailure(logInfo);
                             e.printStackTrace();
@@ -159,31 +200,57 @@ public class DecryptPopupController {
             }
         };
 
-        encTask.setOnSucceeded(event -> onDecryptionComplete());
+        task.setOnSucceeded(event -> onDecryptionComplete());
 
-        encTask.setOnFailed(event -> {
+        task.setOnFailed(event -> {
             Label alertLabel = new Label("Encryption process failed");
             Shared.showAlert(alertLabel);
             onDecryptionComplete();
         });
 
-        new Thread(encTask).start();
+        new Thread(task).start();
     }
 
     // Method called when encryption is complete
     private void onDecryptionComplete() {
-        encComplete = true;
+        decComplete = true;
         stage.setOnCloseRequest(null);
+        statusLabel.setText(String.valueOf(successCount) + " succeeded, " + String.valueOf(failedCount) + " failed, " + String.valueOf(cancelledCount) + " cancelled.");
         closeButton.setOnAction(event -> stage.close());
+    }
+
+    private void markFileCancelled(File file) {
+        Platform.runLater(() -> {
+            Label fileLabel = fileLabelMap.get(file);
+            if (fileLabel != null) {
+                fileLabel.setStyle("-fx-strikethrough: true");
+            }
+        });
     }
 
     // Handle close button action
     public void handleCloseButton() {
-        if (!encComplete) {
+        if (!decComplete) {
             Label alertLabel = new Label("Please wait until decryption is complete");
             Shared.showAlert(alertLabel);
         } else {
             stage.close();
+        }
+    }
+
+    @FXML
+    public void handleCancelAllButton() {
+        if(task != null && !task.isDone()) {
+            task.cancel();
+        }
+        if (!decComplete) {
+            for (File file : cancelFlagMap.keySet()) {
+                cancelFlagMap.get(file).set(true);
+                markFileCancelled(file);
+            }
+            cancelAllButton.setDisable(true);
+            statusLabel.setText("All operations cancelled.");
+            stage.setOnCloseRequest(null);
         }
     }
 
@@ -197,7 +264,7 @@ public class DecryptPopupController {
                     setGraphic(null);
                 } else {
                     listFileName = new Label(item.getName());
-                    listFileSize = new Label("(" + item.length() / 1024 + " KB)"); //TODO: create function for file size
+                    listFileSize = new Label("(" + Shared.formatFileSize(item.length()) + ")");
 
                     timeNeededLabel = new Label();
 
@@ -235,12 +302,18 @@ public class DecryptPopupController {
                     greenTickMap.put(item, greenTick);
                     progressBarMap.put(item, progressBar);
                     timeLabelMap.put(item, timeNeededLabel);
+                    rowMap.put(item, row);
+                    fileLabelMap.put(item, listFileName);
 
 
                     setGraphic(row);
 
                     deleteButton.setOnAction(e -> {
-                        //TODO: clicking on the delete button will stop any progress for the file. not removing the file from the list crossover the file
+                        if (!decComplete) {
+                            cancelFlagMap.get(item).set(true);
+                            markFileCancelled(item);
+                            deleteButton.setDisable(true);
+                        }
                     });
                 }
             }
@@ -265,6 +338,4 @@ public class DecryptPopupController {
     }
 }
 
-//TODO: add cancel button for each file to stop encryption of that particular file
-//TODO: cancel all button to stop encryption of all files
 

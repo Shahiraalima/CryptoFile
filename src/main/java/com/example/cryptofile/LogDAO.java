@@ -20,7 +20,7 @@ public class LogDAO {
                 "VALUES (?, ?, ?, ?, ?, ?, NOW())";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             var statement = conn.prepareStatement(query)) {
+             var statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, logInfo.getUser_id());
             if(logInfo.getFile_id()!=0){

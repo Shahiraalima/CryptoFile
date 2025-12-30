@@ -83,7 +83,7 @@ public class Shared {
         }
     }
 
-    public static String formatFIleSize(long sizeInBytes) {
+    public static String formatFileSize(long sizeInBytes) {
         if (sizeInBytes < 1024) {
             return sizeInBytes + " B";
         }
@@ -92,4 +92,44 @@ public class Shared {
         String pre = "KMGTPE".charAt(exp - 1) + "B";
         return String.format("%.1f %s", sizeInBytes / Math.pow(1024, exp), pre);
     }
+
+    public static String formatTimeDuration(long durationInMillis) {
+        long seconds = durationInMillis / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        seconds %= 60;
+        minutes %= 60;
+        hours %= 24;
+
+        StringBuilder formattedDuration = new StringBuilder();
+        if (days > 0) {
+            formattedDuration.append(days).append("d ");
+        }
+        if (hours > 0 || days > 0) {
+            formattedDuration.append(hours).append("h ");
+        }
+        if (minutes > 0 || hours > 0 || days > 0) {
+            formattedDuration.append(minutes).append("m ");
+        }
+        formattedDuration.append(seconds).append("s");
+
+        return formattedDuration.toString().trim();
+    }
+
+    public static String formatFileName(String filename) {
+        if (filename == null || filename.isBlank()) {
+            return "";
+        }
+
+        int dotIndex = filename.lastIndexOf('.');
+        if (dotIndex > 0) {
+            filename = filename.substring(0, dotIndex);
+        }
+
+        return filename;
+    }
+
+
 }

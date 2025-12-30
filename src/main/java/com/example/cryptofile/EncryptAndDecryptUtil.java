@@ -173,7 +173,7 @@ public class EncryptAndDecryptUtil {
                     setGraphic(null);
                 } else {
                     Label labelName = new Label(item.getName());
-                    Label labelSize = new Label("(" + item.length()/1024 + " KB)"); //TODO: create function for file size
+                    Label labelSize = new Label("(" + Shared.formatFileSize(item.length()) + ")");
                     VBox fileInfoBox = new VBox(labelName, labelSize);
                     fileInfoBox.setAlignment(Pos.CENTER_LEFT);
 

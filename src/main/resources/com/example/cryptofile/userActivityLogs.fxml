@@ -6,69 +6,70 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="950.0" style="-fx-background-color:  #f5f6fa;" stylesheets="@styles/logs.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserActivityLogsController">
-
-    <top>
-        <VBox spacing="10" style="-fx-padding: 30 30 20 30;" BorderPane.alignment="CENTER">
-            <children>
-                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Activity Logs" />
-                <Label style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Track all your encryption and decryption activities" />
-            </children>
-        </VBox>
-    </top>
-
-    <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
-            <VBox spacing="25" style="-fx-padding: 0 30 30 30;">
-
-                <HBox spacing="20" style="-fx-alignment: center;">
-
-                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
-                        <Label fx:id="totalOperationsIcon" />
-                        <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Total Operations" />
-                        <Label fx:id="totalOperationsLabel" style="-fx-font-size: 32px;" text="0" />
+<BorderPane prefHeight="700.0" prefWidth="950.0" style="-fx-background-color:  #f5f6fa;" stylesheets="@styles/logs.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserActivityLogsController">
+   <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+              <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                  <VBox spacing="25" style="-fx-padding: 0 30 30 30;">
+                    <VBox spacing="10" style="-fx-padding: 30 30 20 30;">
+                        <children>
+                            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Activity Logs" />
+                            <Label style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Track all your encryption and decryption activities" />
+                        </children>
                     </VBox>
-                    <VBox spacing="10" style="-fx-background-color:  white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
-                        <Label fx:id="encryptedCountIcon" />
-                        <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Encrypted" />
-                        <Label fx:id="encryptedCountLabel" style="-fx-font-size: 32px;" text="0" />
-                    </VBox>
-
-                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
-                        <Label fx:id="decryptedCountIcon" />
-                        <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Decrypted" />
-                        <Label fx:id="decryptedCountLabel" style="-fx-font-size: 32px;" text="0" />
-                    </VBox>
-                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect:  dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
-                        <Label fx:id="successRateIcon" textFill="#80008012" />
-                        <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Success Rate" />
-                        <Label fx:id="successRateLabel" style="-fx-font-size: 32px;" text="0%" />
-                    </VBox>
-
-                </HBox>
-                <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius:  12;                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
-                    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Recent Activity" />
-
-                    <TableView fx:id="activityTable" stylesheets="@styles/logs.css">
-                        <columns>
-                            <TableColumn fx:id="statusColumn" prefWidth="80.0" style="-fx-alignment: CENTER;" text="Status" />
-                            <TableColumn fx:id="fileNameColumn" prefWidth="200.0" text="File Name" />
-                            <TableColumn fx:id="operationColumn" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Operation" />
-                            <TableColumn fx:id="sizeColumn" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Size" />
-                            <TableColumn fx:id="dateTimeColumn" prefWidth="180.0" style="-fx-alignment:  CENTER;" text="Date &amp; Time" />
-                            <TableColumn fx:id="resultColumn" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Result" />
-                        </columns>
-                  <columnResizePolicy>
-                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                  </columnResizePolicy>
-                    </TableView>
-
-                </VBox>
-
-            </VBox>
-        </ScrollPane>
-    </center>
+      
+                      <HBox spacing="20" style="-fx-alignment: center;">
+      
+                          <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                              <Label fx:id="totalOperationsIcon" />
+                              <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Total Operations" />
+                              <Label fx:id="totalOperationsLabel" style="-fx-font-size: 32px;" text="0" />
+                          </VBox>
+                          <VBox spacing="10" style="-fx-background-color:  white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                              <Label fx:id="encryptedCountIcon" />
+                              <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Encrypted" />
+                              <Label fx:id="encryptedCountLabel" style="-fx-font-size: 32px;" text="0" />
+                          </VBox>
+      
+                          <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                              <Label fx:id="decryptedCountIcon" />
+                              <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Decrypted" />
+                              <Label fx:id="decryptedCountLabel" style="-fx-font-size: 32px;" text="0" />
+                          </VBox>
+                          <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect:  dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                              <Label fx:id="successRateIcon" textFill="#80008012" />
+                              <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Success Rate" />
+                              <Label fx:id="successRateLabel" style="-fx-font-size: 32px;" text="0%" />
+                          </VBox>
+      
+                      </HBox>
+                      <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius:  12;                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                          <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Recent Activity" />
+      
+                          <TableView fx:id="activityTable" stylesheets="@styles/logs.css">
+                              <columns>
+                                  <TableColumn fx:id="statusColumn" prefWidth="80.0" style="-fx-alignment: CENTER;" text="Status" />
+                                  <TableColumn fx:id="fileNameColumn" prefWidth="200.0" text="File Name" />
+                                  <TableColumn fx:id="operationColumn" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Operation" />
+                                  <TableColumn fx:id="sizeColumn" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Size" />
+                                  <TableColumn fx:id="dateTimeColumn" prefWidth="180.0" style="-fx-alignment:  CENTER;" text="Date &amp; Time" />
+                                  <TableColumn fx:id="resultColumn" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Result" />
+                              </columns>
+                        <columnResizePolicy>
+                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                          </TableView>
+      
+                      </VBox>
+      
+                  </VBox>
+              </ScrollPane>
+         </children>
+      </StackPane>
+   </center>
 
 </BorderPane>

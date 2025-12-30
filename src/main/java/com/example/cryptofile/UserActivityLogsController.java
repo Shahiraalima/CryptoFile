@@ -147,7 +147,7 @@ public class UserActivityLogsController {
 
         sizeColumn.setCellValueFactory(cellData -> {
                     long bytes = cellData.getValue().getFile_size();
-                    String formattedSize = Shared.formatFIleSize(bytes);
+                    String formattedSize = Shared.formatFileSize(bytes);
                     return new SimpleStringProperty(formattedSize);
                 });
         sizeColumn.setStyle("-fx-alignment: CENTER;");
