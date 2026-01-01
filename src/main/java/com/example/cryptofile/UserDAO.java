@@ -1,5 +1,7 @@
 package com.example.cryptofile;
 
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 
 
@@ -14,7 +16,29 @@ public class UserDAO {
         }
     }
 
-    // Verify user login credentials and return UserInfo if valid
+    public ObservableList<UserInfo> getAllUsers() {
+        String query = "SELECT * FROM USERS";
+        ObservableList<UserInfo> usersList = javafx.collections.FXCollections.observableArrayList();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query);) {
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                UserInfo user = new UserInfo();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setRole(rs.getString("roles"));
+                user.setFullName(rs.getString("full_name"));
+                user.setAccount_created(rs.getTimestamp("account_created").toLocalDateTime());
+                usersList.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return usersList;
+    }
+
+        // Verify user login credentials and return UserInfo if valid
     public UserInfo loginVerify(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -73,14 +97,14 @@ public class UserDAO {
         return false;
     }
 
-    public boolean updateUserInfo(String username, String fullName, String email) {
+    public boolean updateUserInfo(UserInfo user) {
         String query = "UPDATE users SET full_name = ?, email = ? WHERE username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
-            statement.setString(1, fullName);
-            statement.setString(2, email);
-            statement.setString(3, username);
+            statement.setString(1, user.getFullName());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getUsername());
 
             int rowsUpdated = statement.executeUpdate();
             return rowsUpdated > 0;
@@ -101,6 +125,17 @@ public class UserDAO {
             return rowsUpdated > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Error updating user password", e);
+        }
+    }
+
+    public void deleteUser(String username) {
+        String query = "DELETE FROM users WHERE username = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setString(1, username);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting user", e);
         }
     }
 

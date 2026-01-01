@@ -110,7 +110,7 @@ public class LoginController {
     @FXML
     public void switchToAdminHomeScene(ActionEvent event) throws IOException {
         Shared shared = new Shared();
-        shared.switchScene(event, "adminHome.fxml");
+        shared.switchScene(event, "adminNavigation.fxml");
     }
 
 }

@@ -251,7 +251,7 @@ public class UserActivityLogsController {
             event.getSource().getException().printStackTrace();
         });
 
-        new Thread(loadTask, "load-logs-thread").start();
+        new Thread(loadTask).start();
     }
 
 

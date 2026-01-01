@@ -66,8 +66,11 @@ public class UserProfileController {
         String newEmail = emailField.getText();
 
         UserDAO userDAO = new UserDAO();
-
-        boolean updateSuccess = userDAO.updateUserInfo(SessionManager.loggedInUser.getUsername(), newFullName, newEmail);
+        UserInfo user = new UserInfo();
+        user.setFullName(newFullName);
+        user.setEmail(newEmail);
+        user.setUsername(SessionManager.loggedInUser.getUsername());
+        boolean updateSuccess = userDAO.updateUserInfo(user);
 
         if (updateSuccess) {
             infoMessageLabel.setText("Information updated successfully.");
