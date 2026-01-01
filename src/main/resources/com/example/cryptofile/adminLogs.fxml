@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="950.0" style="-fx-background-color:  #f5f6fa;" stylesheets="@styles/logs.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.AdminLogsController">
+    <center>
+        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="25" style="-fx-padding: 0 30 30 30;">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <VBox spacing="10" style="-fx-padding: 30 30 20 30;" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="System Activity Logs" />
+                                        <Label style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Track all encryption and decryption activities in the system." />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius:  12;                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+
+                            <TableView fx:id="activityTable" stylesheets="@styles/logs.css">
+                                <columns>
+                                    <TableColumn fx:id="activityColumn" prefWidth="80.0" style="-fx-alignment: CENTER;" text="Activity" />
+                                    <TableColumn fx:id="fileNameColumn" prefWidth="200.0" text="Original File Name" />
+                                    <TableColumn fx:id="userColumn" prefWidth="120.0" style="-fx-alignment: CENTER;" text="User" />
+                                    <TableColumn fx:id="statusColumn" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="Status" />
+                                    <TableColumn fx:id="sizeColumn" prefWidth="127.19989013671875" style="-fx-alignment:  CENTER;" text="File Size" />
+                                    <TableColumn fx:id="dateColumn" prefWidth="170.40008544921875" style="-fx-alignment: CENTER;" text="Date &amp; Time" />
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
+                            </TableView>
+
+                        </VBox>
+
+                    </VBox>
+                </ScrollPane>
+            </children>
+        </StackPane>
+    </center>
+
+</BorderPane>

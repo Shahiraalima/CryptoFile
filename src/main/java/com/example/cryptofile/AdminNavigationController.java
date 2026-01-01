@@ -48,12 +48,12 @@ public class AdminNavigationController {
 
     @FXML
     public void loadActivityLogs() {
-        loadView("adminActivityLogs.fxml");
+        loadView("adminLogs.fxml");
     }
 
     @FXML
     public void loadProfile() {
-        loadView("adminProfile.fxml");
+        loadView("adminInfo.fxml");
     }
 
     @FXML

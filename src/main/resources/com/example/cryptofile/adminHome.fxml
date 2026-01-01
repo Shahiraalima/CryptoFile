@@ -1,14 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.cryptofile.AdminHomeController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane prefHeight="700.0" prefWidth="950.0" style="-fx-background-color:  #f5f6fa;" stylesheets="@styles/logs.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.AdminHomeController">
+    <center>
+        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="25" style="-fx-padding: 0 30 30 30;">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <VBox spacing="10" style="-fx-padding: 30 30 20 30;" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Welcome back!" />
+                                        <Label style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Here's your encryption system overview" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
 
-</AnchorPane>
+                        <HBox spacing="20" style="-fx-alignment: center;">
+
+                            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                                <Label fx:id="totalOperationsIcon" />
+                                <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Total users" />
+                                <Label fx:id="totalUsersLabel" style="-fx-font-size: 32px;" text="0" />
+                            </VBox>
+                            <VBox spacing="10" style="-fx-background-color:  white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                                <Label fx:id="encryptedCountIcon" />
+                                <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Encrypted Files" />
+                                <Label fx:id="EncryptedFilesLabel" style="-fx-font-size: 32px;" text="0" />
+                            </VBox>
+
+                            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                                <Label fx:id="decryptedCountIcon" />
+                                <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Decrypted Files" />
+                                <Label fx:id="DecryptedFilesLabel" style="-fx-font-size: 32px;" text="0" />
+                            </VBox>
+                            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;                            -fx-effect:  dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);                            -fx-min-width: 180; -fx-alignment: center;">
+                                <Label fx:id="successRateIcon" textFill="#80008012" />
+                                <Label style="-fx-font-size: 15; -fx-text-fill: #7f8c8d;" text="Total Operations" />
+                                <Label fx:id="toalOperationsLabel" style="-fx-font-size: 32px;" text="0" />
+                            </VBox>
+
+                        </HBox>
+                  <HBox alignment="CENTER" spacing="30.0">
+                     <children>
+                        <VBox maxHeight="-Infinity" style="-fx-background-color: white; -fx-background-radius: 10;">
+                           <children>
+                              <BarChart fx:id="FilesBarChart" categoryGap="2.0" title="File Activity">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white;">
+                           <children>
+                              <LineChart fx:id="UsersLineChart" title="User Activity">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="30.0">
+                     <children>
+                        <VBox style="-fx-background-color: white;">
+                           <children>
+                              <PieChart fx:id="FileTypePieChart" title="File Type Distribution" />
+                           </children>
+                        </VBox>
+                        <VBox style="-fx-background-color: white;">
+                           <children>
+                              <LineChart fx:id="successFailureLineChart" title="Success and Failure">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                    </VBox>
+                </ScrollPane>
+            </children>
+        </StackPane>
+    </center>
+
+</BorderPane>

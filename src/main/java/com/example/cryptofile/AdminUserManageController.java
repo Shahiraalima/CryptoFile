@@ -12,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 public class AdminUserManageController {
@@ -41,8 +40,6 @@ public class AdminUserManageController {
 
         setupTableColumns();
         loadUsers();
-//        addUserButton.setOnAction(e -> { handleAddUser(); });
-//        loadStatistics();
     }
 
     private  void setupTableColumns() {
@@ -119,7 +116,7 @@ public class AdminUserManageController {
             }
         });
 
-        activityTable.setPlaceholder(new Label("No activity logs found"));
+        activityTable.setPlaceholder(new Label("No user records found"));
 
     }
 
