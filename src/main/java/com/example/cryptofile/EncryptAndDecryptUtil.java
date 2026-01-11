@@ -223,7 +223,7 @@ public class EncryptAndDecryptUtil {
 
     // Browse and select files to encrypt and add the files to the list view
     public static void handleBrowseFiles(List<File> selectedFiles, ListView<File> listView, ObservableList<File> fileList,
-                                         StackPane browseBox, Button removeAllBtn, Label fileCountLabel, TextField outputFilePath) { //TODO: add the drag and drop
+                                         StackPane browseBox, Button removeAllBtn, Label fileCountLabel, TextField outputFilePath) {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Files to Encrypt");

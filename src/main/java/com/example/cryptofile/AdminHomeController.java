@@ -6,6 +6,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import java.util.Map;
 
 public class AdminHomeController {
     @FXML private Label totalUsersLabel;
@@ -18,13 +19,42 @@ public class AdminHomeController {
     @FXML private PieChart FileTypePieChart;
     @FXML private LineChart<String, Number> successFailureLineChart;
 
+    private UserDAO userDAO;
+    private FileDAO fileDAO;
+    private LogDAO logDAO;
+
     @FXML
     public void initialize() {
+        userDAO = new UserDAO();
+        fileDAO = new FileDAO();
+        logDAO = new LogDAO();
+
         loadStatistics();
         loadCharts();
     }
 
     private void loadStatistics() {
+        try {
+            // Load total users
+            int totalUsers = userDAO.getTotalUsersCount();
+            totalUsersLabel.setText(String.valueOf(totalUsers));
+
+            // Load encrypted files count
+            int encryptedFiles = fileDAO.getFilesCountByStatus("encrypted");
+            EncryptedFilesLabel.setText(String.valueOf(encryptedFiles));
+
+            // Load decrypted files count
+            int decryptedFiles = fileDAO.getFilesCountByStatus("decrypted");
+            DecryptedFilesLabel.setText(String.valueOf(decryptedFiles));
+
+            // Load total operations
+            int totalOperations = logDAO.getTotalOperationsCount();
+            toalOperationsLabel.setText(String.valueOf(totalOperations));
+
+        } catch (Exception e) {
+            System.err.println("Error loading statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void loadCharts() {
@@ -35,65 +65,100 @@ public class AdminHomeController {
     }
 
     private void loadFilesBarChart() {
-        XYChart.Series<String, Number> encryptedSeries = new XYChart.Series<>();
-        encryptedSeries.setName("Encrypted");
+        try {
+            XYChart.Series<String, Number> encryptedSeries = new XYChart.Series<>();
+            encryptedSeries.setName("Encrypted");
 
-        XYChart.Series<String, Number> decryptedSeries = new XYChart.Series<>();
-        decryptedSeries.setName("Decrypted");
+            XYChart.Series<String, Number> decryptedSeries = new XYChart.Series<>();
+            decryptedSeries.setName("Decrypted");
 
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        int[] encryptedData = {120, 150, 180, 200, 220, 250, 270, 300, 320, 350, 400, 450};
+            // Get data from database
+            Map<String, Integer> encryptedData = fileDAO.getEncryptedFilesByMonth();
+            Map<String, Integer> decryptedData = fileDAO.getDecryptedFilesByMonth();
 
-        int[] decryptedData = {100, 130, 160, 180, 200, 230, 250, 280, 300, 330, 380, 420};
+            String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-        for (int i = 0; i < months.length; i++) {
-            encryptedSeries.getData().add(new XYChart.Data<>(months[i], encryptedData[i]));
-            decryptedSeries.getData().add(new XYChart.Data<>(months[i], decryptedData[i]));
+            for (String month : months) {
+                int encCount = encryptedData.getOrDefault(month, 0);
+                int decCount = decryptedData.getOrDefault(month, 0);
+
+                encryptedSeries.getData().add(new XYChart.Data<>(month, encCount));
+                decryptedSeries.getData().add(new XYChart.Data<>(month, decCount));
+            }
+
+            FilesBarChart.getData().addAll(encryptedSeries, decryptedSeries);
+        } catch (Exception e) {
+            System.err.println("Error loading files bar chart: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        FilesBarChart.getData().addAll(encryptedSeries, decryptedSeries);
     }
 
     private void loadUsersLineChart() {
-        XYChart.Series<String, Number> userSeries = new XYChart.Series<>();
-        userSeries.setName("Active Users");
+        try {
+            XYChart.Series<String, Number> userSeries = new XYChart.Series<>();
+            userSeries.setName("New Users");
 
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        int[] userData = {50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160};
+            // Get data from database
+            Map<String, Integer> userData = userDAO.getUserRegistrationsByMonth();
 
-        for (int i = 0; i < months.length; i++) {
-            userSeries.getData().add(new XYChart.Data<>(months[i], userData[i]));
+            String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+            for (String month : months) {
+                int count = userData.getOrDefault(month, 0);
+                userSeries.getData().add(new XYChart.Data<>(month, count));
+            }
+
+            UsersLineChart.getData().add(userSeries);
+        } catch (Exception e) {
+            System.err.println("Error loading users line chart: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        UsersLineChart.getData().add(userSeries);
     }
 
     private void loadFileTypePieChart() {
-        PieChart.Data documentsSlice = new PieChart.Data("Documents", 30);
-        PieChart.Data imageSlice = new PieChart.Data("Image", 25);
-        PieChart.Data videosSlice = new PieChart.Data("Videos", 20);
-        PieChart.Data otherSlice = new PieChart.Data("Other", 10);
+        try {
+            Map<String, Integer> fileTypeData = fileDAO.getFileTypeDistribution();
 
-        FileTypePieChart.getData().addAll(documentsSlice, imageSlice, videosSlice, otherSlice);
+            FileTypePieChart.getData().clear();
+
+            for (Map.Entry<String, Integer> entry : fileTypeData.entrySet()) {
+                if (entry.getValue() > 0) {
+                    PieChart.Data slice = new PieChart.Data(entry.getKey(), entry.getValue());
+                    FileTypePieChart.getData().add(slice);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading file type pie chart: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void loadSuccessFailureLineChart() {
-        XYChart.Series<String, Number> successSeries = new XYChart.Series<>();
-        successSeries.setName("Success");
+        try {
+            XYChart.Series<String, Number> successSeries = new XYChart.Series<>();
+            successSeries.setName("Success");
 
-        XYChart.Series<String, Number> failureSeries = new XYChart.Series<>();
-        failureSeries.setName("Failure");
+            XYChart.Series<String, Number> failureSeries = new XYChart.Series<>();
+            failureSeries.setName("Failure");
 
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        int[] successData = {110, 140, 170, 190, 210, 240, 260, 290, 310, 340, 390, 430};
+            Map<String, Integer> successData = logDAO.getSuccessCountByMonth();
+            Map<String, Integer> failureData = logDAO.getFailureCountByMonth();
 
-        int[] failureData = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 20};
+            String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-        for (int i = 0; i < months.length; i++) {
-            successSeries.getData().add(new XYChart.Data<>(months[i], successData[i]));
-            failureSeries.getData().add(new XYChart.Data<>(months[i], failureData[i]));
+            for (String month : months) {
+                int successCount = successData.getOrDefault(month, 0);
+                int failureCount = failureData.getOrDefault(month, 0);
+
+                successSeries.getData().add(new XYChart.Data<>(month, successCount));
+                failureSeries.getData().add(new XYChart.Data<>(month, failureCount));
+            }
+
+            successFailureLineChart.getData().addAll(successSeries, failureSeries);
+        } catch (Exception e) {
+            System.err.println("Error loading success/failure line chart: " + e.getMessage());
+            e.printStackTrace();
         }
-        successFailureLineChart.getData().addAll(successSeries, failureSeries);
     }
 
 

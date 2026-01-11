@@ -2,9 +2,6 @@ package com.example.cryptofile;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -16,8 +13,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Objects;
 
 
 public class LoginController {
@@ -80,7 +75,7 @@ public class LoginController {
             UserDAO userDAO = new UserDAO();
             UserInfo validUser = userDAO.loginVerify(user, pass);
             if (validUser != null) {
-                if (validUser.getRole().equals("admin")) {
+                if (validUser.getRole().equals("Admin")) {
                     switchToAdminHomeScene(event);
                 } else {
                     switchToUserHomeScene(event);

@@ -39,7 +39,28 @@ public class AdminUserManageController {
         activityTable.setFixedCellSize(50);
 
         setupTableColumns();
+        loadStatistics();
         loadUsers();
+    }
+
+    private void loadStatistics() {
+        try {
+            int totalUsers = userDAO.getTotalUsersCount();
+            totalUsersLabel.setText(String.valueOf(totalUsers));
+
+            int standardUsers = userDAO.getUserCountByRole("User");
+            standardUsersLabel.setText(String.valueOf(standardUsers));
+
+            int admins = userDAO.getUserCountByRole("Admin");
+            adminsLabel.setText(String.valueOf(admins));
+
+            int newUsers = userDAO.getNewUsersThisMonth();
+            newUsersLabel.setText(String.valueOf(newUsers));
+
+        } catch (Exception e) {
+            System.err.println("Error loading user statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private  void setupTableColumns() {
@@ -59,7 +80,11 @@ public class AdminUserManageController {
         roleColumn.setStyle( "-fx-alignment: CENTER;");
 
         lastActiveColumn.setCellValueFactory(cellData -> {
-            return new SimpleStringProperty("");
+            LocalDateTime lastActive = cellData.getValue().getLast_active();
+            if (lastActive != null) {
+                return new SimpleStringProperty(lastActive.toString());
+            }
+            return new SimpleStringProperty("Never");
         });
         lastActiveColumn.setStyle( "-fx-alignment: CENTER;");
 
@@ -151,8 +176,8 @@ public class AdminUserManageController {
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
         ComboBox<String> roleComboBox = new ComboBox<>();
-        roleComboBox.getItems().addAll("admin", "user");
-        roleComboBox.setValue("user");
+        roleComboBox.getItems().addAll("Admin", "User");
+        roleComboBox.setValue("User");
 
         grid.add(new Label("Username:"), 0, 0);
         grid.add(usernameField, 1, 0);
@@ -208,7 +233,7 @@ public class AdminUserManageController {
         });
 
         ComboBox<String> roleComboBox = new ComboBox<>();
-        roleComboBox.getItems().addAll("admin", "user");
+        roleComboBox.getItems().addAll("Admin", "User");
         roleComboBox.setValue(userInfo.getRole());
 
         grid.add(new Label("Username:"), 0, 0);

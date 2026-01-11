@@ -15,6 +15,8 @@ public class LogInfo {
 
     private LocalDateTime timestamp;
 
+    private String user_name;
+
     private int operation_duration;
 
     public LogInfo() {}
@@ -89,5 +91,13 @@ public class LogInfo {
 
     public void setOperation_duration(int operation_duration) {
         this.operation_duration = operation_duration;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 }

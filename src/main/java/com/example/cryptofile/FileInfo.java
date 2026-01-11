@@ -1,6 +1,5 @@
 package com.example.cryptofile;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class FileInfo {
@@ -12,17 +11,19 @@ public class FileInfo {
     private String og_file_type;
     private String og_file_hash;
 
-    private String encrypted_file_name;
-    private Long encrypted_file_size;
+    private String new_file_name;
+    private Long new_file_size;
     private String encrypted_file_hash;
 
 
     private String status;
     private LocalDateTime encrypted_at;
     private LocalDateTime decrypted_at;
+    private LocalDateTime modified_at;
 
 
     private Boolean deleted;
+    private String username;
 
     public FileInfo() {
     }
@@ -68,20 +69,20 @@ public class FileInfo {
         this.og_file_type = og_file_type;
     }
 
-    public String getEncrypted_file_name() {
-        return encrypted_file_name;
+    public String getNew_file_name() {
+        return new_file_name;
     }
 
-    public void setEncrypted_file_name(String encrypted_file_name) {
-        this.encrypted_file_name = encrypted_file_name;
+    public void setNew_file_name(String new_file_name) {
+        this.new_file_name = new_file_name;
     }
 
-    public Long getEncrypted_file_size() {
-        return encrypted_file_size;
+    public Long getNew_file_size() {
+        return new_file_size;
     }
 
-    public void setEncrypted_file_size(Long encrypted_file_size) {
-        this.encrypted_file_size = encrypted_file_size;
+    public void setNew_file_size(Long new_file_size) {
+        this.new_file_size = new_file_size;
     }
 
     public String getOg_file_hash() {
@@ -130,5 +131,21 @@ public class FileInfo {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public void setUserName(String username) {
+        this.username = username;
+    }
+
+    public String getUserName() {
+        return username;
+    }
+
+    public LocalDateTime getModified_at() {
+        return modified_at;
+    }
+
+    public void setModified_at(LocalDateTime modified_at) {
+        this.modified_at = modified_at;
     }
 }

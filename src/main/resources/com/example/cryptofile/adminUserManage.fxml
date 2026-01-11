@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="950.0" style="-fx-background-color:  #f5f6fa;" stylesheets="@styles/logs.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.AdminUserManageController">
+<BorderPane prefHeight="700.0" prefWidth="950.0" style="-fx-background-color:  #f5f6fa;" stylesheets="@styles/logs.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.AdminUserManageController">
     <center>
         <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>

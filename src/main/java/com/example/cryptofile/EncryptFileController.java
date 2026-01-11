@@ -4,22 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EncryptFileController {
 
@@ -45,11 +38,6 @@ public class EncryptFileController {
     private List<File> selectedFiles;
     private ObservableList<File> fileList = FXCollections.observableArrayList();
     private ObservableList<FileInfo> fileInfoList = FXCollections.observableArrayList();
-
-
-    //TODO: password must be of 8 characters regardless of strong or weak..show alert..
-    //TODO: for popup close button think something like.. are you sure you want to cancel encryption? progress will be lost.
-
 
     @FXML
     public void initialize() {
@@ -127,8 +115,6 @@ public class EncryptFileController {
         passwordStrengthLabel.setText("");
         passwordMatchLabel.setText("");
     }
-
-
 
     // Check if password and confirm password match
     private boolean checkPasswordMatch() {

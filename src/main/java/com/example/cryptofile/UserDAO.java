@@ -10,14 +10,16 @@ public class UserDAO {
     public UserDAO() {
         try {
             Connection conn = DatabaseConnection.getConnection();
-            System.out.print("Connected to database successfully.\n");
+            System.out.print(" .\n");
         } catch (SQLException e) {
             throw new RuntimeException("Failed to connect to database.\n", e);
         }
     }
 
     public ObservableList<UserInfo> getAllUsers() {
-        String query = "SELECT * FROM USERS";
+        String query = "SELECT u.*, " +
+                "(SELECT MAX(timestamp) FROM activity_logs WHERE user_id = u.user_id) AS last_active " +
+                "FROM users u";
         ObservableList<UserInfo> usersList = javafx.collections.FXCollections.observableArrayList();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(query);) {
@@ -30,6 +32,13 @@ public class UserDAO {
                 user.setRole(rs.getString("roles"));
                 user.setFullName(rs.getString("full_name"));
                 user.setAccount_created(rs.getTimestamp("account_created").toLocalDateTime());
+
+                // Set last active if available
+                Timestamp lastActiveTs = rs.getTimestamp("last_active");
+                if (lastActiveTs != null) {
+                    user.setLast_active(lastActiveTs.toLocalDateTime());
+                }
+
                 usersList.add(user);
             }
         } catch (SQLException e) {
@@ -139,6 +148,54 @@ public class UserDAO {
         }
     }
 
+    public int getTotalUsersCount() {
+        String query = "SELECT COUNT(*) as total FROM users";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
+
+    public java.util.Map<String, Integer> getUserRegistrationsByMonth() {
+        java.util.Map<String, Integer> monthlyData = new java.util.LinkedHashMap<>();
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+        String query = "SELECT MONTH(account_created) as month, COUNT(*) as count " +
+                "FROM users " +
+                "WHERE YEAR(account_created) = YEAR(CURDATE()) " +
+                "GROUP BY MONTH(account_created) " +
+                "ORDER BY MONTH(account_created)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int monthNum = rs.getInt("month");
+                int count = rs.getInt("count");
+                monthlyData.put(months[monthNum - 1], count);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Fill in months with no data
+        for (String month : months) {
+            monthlyData.putIfAbsent(month, 0);
+        }
+
+        return monthlyData;
+    }
+
 
     // Check if username already exists in the database
     public boolean checkUsernameExists(String username) {
@@ -189,6 +246,43 @@ public class UserDAO {
         if (!hasDigit) return "Add at least one digit.";
         if (!hasSpecial) return "Add at least one special character (!@#$%^&*()-+).";
         return "Strong";
+    }
+
+    public int getUserCountByRole(String role) {
+        String query = "SELECT COUNT(*) as total FROM users WHERE roles = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            statement.setString(1, role);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
+
+    public int getNewUsersThisMonth() {
+        String query = "SELECT COUNT(*) as total FROM users " +
+                "WHERE YEAR(account_created) = YEAR(CURDATE()) " +
+                "AND MONTH(account_created) = MONTH(CURDATE())";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
     }
 
 

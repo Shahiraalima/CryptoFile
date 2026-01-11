@@ -157,8 +157,8 @@ public class EncryptPopupController {
                             fileInfo.setOg_file_type(inputFile.substring(inputFile.lastIndexOf(".") + 1));
                             fileInfo.setOg_file_hash(fileHash);
                             String f = outputFile.substring(outputFile.lastIndexOf(File.separator) + 1);
-                            fileInfo.setEncrypted_file_name(Shared.formatFileName(f));
-                            fileInfo.setEncrypted_file_size((long) new File(outputFile).length());
+                            fileInfo.setNew_file_name(Shared.formatFileName(f) + ".enc");
+                            fileInfo.setNew_file_size((long) new File(outputFile).length());
                             fileInfo.setEncrypted_file_hash(fileHashAfter);
 
                             if(fileEncrypted.equals("not_found")) {

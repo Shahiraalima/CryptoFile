@@ -1,14 +1,11 @@
 package com.example.cryptofile;
 
-import com.mysql.cj.log.Log;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 
 public class AdminLogsController {
 
@@ -33,25 +30,35 @@ public class AdminLogsController {
     }
 
     private  void setupTableColumns() {
-//        activityColumn.setCellValueFactory(cellData -> {
-//            return new SimpleStringProperty(cellData.getValue().getAction());
-//        });
-//        activityColumn.setStyle( "-fx-alignment: CENTER;");
+        activityColumn.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(cellData.getValue().getAction());
+        });
+        activityColumn.setStyle( "-fx-alignment: CENTER;");
 
         fileNameColumn.setCellValueFactory(cellData -> {
             return new SimpleStringProperty(cellData.getValue().getFile_name());
         });
         fileNameColumn.setStyle( "-fx-alignment: CENTER;");
 
-//        userColumn.setCellValueFactory(cellData -> {
-//            return new SimpleStringProperty(cellData.getValue().getUser_id());
-//        });
-//        userColumn.setStyle( "-fx-alignment: CENTER;");
+        userColumn.setCellValueFactory(cellData -> {
+            String username = cellData.getValue().getUser_name();
+            return new SimpleStringProperty(username != null ? username : "N/A");
+        });
+        userColumn.setStyle( "-fx-alignment: CENTER;");
+
+        statusColumn.setCellValueFactory(cellData -> {
+            String status = cellData.getValue().getStatus();
+            return new SimpleStringProperty(status != null ? status : "N/A");
+        });
+        statusColumn.setStyle( "-fx-alignment: CENTER;");
 
         sizeColumn.setCellValueFactory(cellData -> {
-            long sizeInBytes = cellData.getValue().getFile_size();
-            String sizeString = Shared.formatFileSize(sizeInBytes);
-            return new SimpleStringProperty("");
+            Long sizeInBytes = cellData.getValue().getFile_size();
+            if (sizeInBytes != null && sizeInBytes > 0) {
+                String sizeString = Shared.formatFileSize(sizeInBytes);
+                return new SimpleStringProperty(sizeString);
+            }
+            return new SimpleStringProperty("N/A");
         });
         sizeColumn.setStyle( "-fx-alignment: CENTER;");
 
@@ -68,7 +75,7 @@ public class AdminLogsController {
     private void loadLogs() {
         try {
             list.clear();
-//            list.addAll(fileDAO.getAllFiles());
+            list.addAll(logDAO.getAllLogs());
             activityTable.setItems(list);
             activityTable.prefHeightProperty().bind(Bindings.min(activityTable.fixedCellSizeProperty().multiply(Bindings.size(activityTable.getItems()).add(1.01)), 600.0));
         } catch (Exception e) {

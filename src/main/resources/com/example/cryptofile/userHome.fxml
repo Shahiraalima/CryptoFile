@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="950.0" stylesheets="@styles/userHome.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserHomeController">
+<BorderPane prefHeight="700.0" prefWidth="950.0" stylesheets="@styles/userHome.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptofile.UserHomeController">
     <center>
         <StackPane fx:id="contentPane">
             <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;">

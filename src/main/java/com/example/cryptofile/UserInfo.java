@@ -11,6 +11,7 @@ public class UserInfo {
     private String role;
     private String fullName;
     private LocalDateTime account_created;
+    private LocalDateTime last_active;
 
     public UserInfo() {
     }
@@ -82,4 +83,11 @@ public class UserInfo {
         return account_created.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy 'at' HH:mm"));
     }
 
+    public LocalDateTime getLast_active() {
+        return last_active;
+    }
+
+    public void setLast_active(LocalDateTime last_active) {
+        this.last_active = last_active;
+    }
 }

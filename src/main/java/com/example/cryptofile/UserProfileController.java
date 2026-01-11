@@ -2,15 +2,10 @@ package com.example.cryptofile;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -60,7 +55,7 @@ public class UserProfileController {
         Shared.setupPasswordStrengthListener(newPasswordField, requirementsLabel, passWordStrengthLabel);
     }
 
-
+    @FXML
     public void handleSaveInfo(ActionEvent event) throws IOException {
         String newFullName = fullNameField.getText();
         String newEmail = emailField.getText();
@@ -82,11 +77,13 @@ public class UserProfileController {
         }
     }
 
+    @FXML
     public void handleCancel(ActionEvent event) throws IOException {
         Shared shared = new Shared();
         shared.switchScene(event, "userNavigation.fxml");
     }
 
+    @FXML
     public void handleChangePassword(ActionEvent event) throws IOException {
         String currentPass = currentPasswordField.getText();
         String newPass = newPasswordField.getText();

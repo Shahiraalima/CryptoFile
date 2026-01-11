@@ -1,17 +1,49 @@
 package com.example.cryptofile;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LogDAO {
     public LogDAO() {
         try {
             Connection conn = DatabaseConnection.getConnection();
-            System.out.print("Connected to database successfully");
+            System.out.print(" ");
         } catch (SQLException e) {
             throw new RuntimeException("Failed to connect to database", e);
         }
+    }
+
+    public ObservableList<LogInfo> getAllLogs() {
+        String query = "SELECT al.*, u.username " +
+                "FROM activity_logs al " +
+                "LEFT JOIN users u ON al.user_id = u.user_id " +
+                "ORDER BY al.timestamp DESC";
+        ObservableList<LogInfo> logs = FXCollections.observableArrayList();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+                LogInfo log = new LogInfo();
+                log.setLog_id(rs.getInt("log_id"));
+                log.setUser_id(rs.getInt("user_id"));
+                log.setFile_id(rs.getInt("file_id"));
+                log.setAction(rs.getString("action"));
+                log.setStatus(rs.getString("status"));
+                log.setFile_name(rs.getString("file_name"));
+                log.setFile_size(rs.getLong("file_size"));
+                log.setUser_name(rs.getString("username"));
+                log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
+                logs.add(log);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return logs;
     }
 
     public static int logActivity(LogInfo logInfo) {
@@ -69,15 +101,6 @@ public class LogDAO {
             logActivity(logInfo);
         } catch (Exception e) {
             System.out.println("Failed to log failure activity: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public static void logPending(LogInfo logInfo) {
-        try{
-            logActivity(logInfo);
-        } catch (Exception e) {
-            System.out.println("Failed to log pending activity: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -215,6 +238,85 @@ public class LogDAO {
             }
         }
         return list;
+    }
+
+    public Map<String, Integer> getSuccessCountByMonth() {
+       Map<String, Integer> monthlyData = new java.util.LinkedHashMap<>();
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+        String query = "SELECT MONTH(timestamp) as month, COUNT(*) as count " +
+                "FROM activity_logs " +
+                "WHERE YEAR(timestamp) = YEAR(CURDATE()) AND status = 'success' " +
+                "GROUP BY MONTH(timestamp) " +
+                "ORDER BY MONTH(timestamp)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int monthNum = rs.getInt("month");
+                int count = rs.getInt("count");
+                monthlyData.put(months[monthNum - 1], count);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Fill in months with no data
+        for (String month : months) {
+            monthlyData.putIfAbsent(month, 0);
+        }
+
+        return monthlyData;
+    }
+
+    public Map<String, Integer> getFailureCountByMonth() {
+        Map<String, Integer> monthlyData = new java.util.LinkedHashMap<>();
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+        String query = "SELECT MONTH(timestamp) as month, COUNT(*) as count " +
+                "FROM activity_logs " +
+                "WHERE YEAR(timestamp) = YEAR(CURDATE()) AND status = 'failure' " +
+                "GROUP BY MONTH(timestamp) " +
+                "ORDER BY MONTH(timestamp)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int monthNum = rs.getInt("month");
+                int count = rs.getInt("count");
+                monthlyData.put(months[monthNum - 1], count);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Fill in months with no data
+        for (String month : months) {
+            monthlyData.putIfAbsent(month, 0);
+        }
+
+        return monthlyData;
+    }
+
+    public int getTotalOperationsCount() {
+        String query = "SELECT COUNT(*) as total FROM activity_logs";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
     }
 
 
